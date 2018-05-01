@@ -133,17 +133,7 @@ function appState(state = initialAppState, action) {
         case ADD_POSTS:
             return {
                 ...state,
-                posts: [
-                    ...state.posts,
-                    {
-                        id,
-                        timestamp,
-                        title,
-                        body,
-                        author,
-                        category
-                    }
-                ]
+                posts: posts
             }
         case ADD_POST:
             return {

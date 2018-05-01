@@ -113,8 +113,7 @@ const mapStateToProps = ({ appState }) => {
 const mapDispatchToProps = dispatch => {
   return {
     addCategories: (data) => dispatch(addCategories(data)),
-    addPosts: (data) => dispatch(addPosts(data)),
-    addPost: (data) => dispatch(addPost(data))
+    addPosts: (data) => dispatch(addPosts(data))
   }
 }
 
