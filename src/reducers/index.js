@@ -8,6 +8,7 @@ import {
     EDIT_POST,
     DELETE_POST,
     SELECT_COMMENT,
+    ADD_COMMENTS,
     ADD_COMMENT,
     EDIT_COMMENT,
     DELETE_COMMENT,
@@ -29,92 +30,26 @@ const initialAppState = {
     categorySelected: ALL_CATEGORIES,
     postSelected: null,
     commentSelected: null,
-    categories: [{
-        "name": "reactDummy",
-        "path": "react"
-    },
-    {
-        "name": "reduxDummy",
-        "path": "redux"
-    },
-    {
-        "name": "udacityDummy",
-        "path": "udacity"
-    }],
-    posts: [
-        {
-            "id": "8xf0y6ziyjabvozdd253nd",
-            "timestamp": 1467166872634,
-            "title": "Udacity is the best place to learn React",
-            "body": "Everyone says so after all.",
-            "author": "thingtwo",
-            "category": "react",
-            "voteScore": 6,
-            "deleted": false,
-            "commentCount": 2
-        },
-        {
-            "id": "6ni6ok3ym7mf1p33lnez",
-            "timestamp": 1468479767190,
-            "title": "Learn Redux in 10 minutes!",
-            "body": "Just kidding. It takes more than 10 minutes to learn technology.",
-            "author": "thingone",
-            "category": "redux",
-            "voteScore": -5,
-            "deleted": false,
-            "commentCount": 0
-        }
-    ],
-    comments: [
-        {
-            "id": "894tuq4ut84ut8v4t8wun89g",
-            "parentId": "8xf0y6ziyjabvozdd253nd",
-            "timestamp": 1468166872634,
-            "body": "Hi there! I am a COMMENT.",
-            "author": "thingtwo",
-            "voteScore": 6,
-            "deleted": false,
-            "parentDeleted": false
-        },
-        {
-            "id": "8tu4bsun805n8un48ve89",
-            "parentId": "8xf0y6ziyjabvozdd253nd",
-            "timestamp": 1469479767190,
-            "body": "Comments. Are. Cool.",
-            "author": "thingone",
-            "voteScore": -5,
-            "deleted": false,
-            "parentDeleted": false
-        },
-        {
-            "id": "comment01",
-            "timestamp": 1467166872222,
-            "body": "Hello Comment 1",
-            "author": "Axel Galicia",
-            "parentId": "8xf0y6ziyjabvozdd253nd",
-            "voteScore": 1,
-            "deleted": false,
-            "parentDeleted": false
-        }
-    ]
+    categories: [],
+    posts: [],
+    comments: []
 }
 
 
 
 function appState(state = initialAppState, action) {
     const {
-        id,
-        timestamp,
-        title,
-        body,
-        author,
         category,
         categories,
         posts,
         post,
+        postId,
         comment,
+        comments,
         type
     } = action
+
+    console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ' + post)
 
     switch (type) {
 
@@ -138,12 +73,15 @@ function appState(state = initialAppState, action) {
         case ADD_POST:
             return {
                 ...state,
-                posts: posts
+                posts: [
+                    ...state.posts,
+                    post
+                ]
             }
         case SELECT_POST:
             return {
                 ...state,
-                postSelected: post.id
+                postSelected: postId
             }
         case EDIT_POST:
             let indexEditPost = state.posts.findIndex(({ id }) => id === post.id);
@@ -157,7 +95,7 @@ function appState(state = initialAppState, action) {
         case DELETE_POST:
             return {
                 ...state,
-                posts: state.posts.filter((post) => post.id !== post.id)
+                posts: state.posts.filter(({ id }) => id !== post.id)
             }
         case UP_VOTE_POST:
             let indexUpVotePost = state.posts.findIndex(({ id }) => id === post.id);
@@ -193,6 +131,20 @@ function appState(state = initialAppState, action) {
                 postSelected: comment.parentId
             }
 
+        case ADD_COMMENTS:
+            return {
+                ...state,
+                comments: comments
+            }
+
+        case ADD_COMMENT:
+            return {
+                ...state,
+                comments: [
+                    ...state.comments,
+                    comment
+                ]
+            }
         case EDIT_COMMENT:
             let indexEditComment = state.comments.findIndex(({ id }) => id === comment.id);
             return {
@@ -206,7 +158,7 @@ function appState(state = initialAppState, action) {
         case DELETE_COMMENT:
             return {
                 ...state,
-                comments: state.comments.filter((comment) => comment.id !== comment.id)
+                comments: state.comments.filter(({ id }) => comment.id !== comment.id)
             }
         case UP_VOTE_COMMENT:
             let indexUpVoteComment = state.comments.findIndex(({ id }) => id === comment.id);

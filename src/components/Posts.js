@@ -1,18 +1,17 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 //React-Redux
 import { connect } from 'react-redux'
 //Compose
 import { compose } from 'recompose'
 //Material-UI
 import { withStyles } from 'material-ui/styles';
-import List, { ListItem, ListItemSecondaryAction, ListItemText } from 'material-ui/List';
-import Avatar from 'material-ui/Avatar';
-import ImageIcon from '@material-ui/icons/Image';
-import WorkIcon from '@material-ui/icons/Work';
-import Badge from 'material-ui/Badge';
+import List from 'material-ui/List';
+
 
 //Local
-import { addCategories, addPosts, addPost } from '../actions'
+import { addCategories, addPosts, addPost, addComments, ALL_CATEGORIES } from '../actions'
+import * as PostsAPI from '../services'
+import Post from './Post'
 
 const styles = theme => ({
     margin: {
@@ -25,14 +24,32 @@ const styles = theme => ({
 });
 
 class Posts extends Component {
+
+    componentDidMount = () => {
+
+    }
+
     render() {
 
         //Props
-        const { classes, posts } = this.props
+        const { classes, posts, categorySelected } = this.props
+
         return (
             <div className={classes.root}>
                 <List>
-                    
+                    {
+                        posts.map((post) => (
+                            <Post
+                                key={post.id}
+                                id={post.id}
+                                title={post.title}
+                                timestamp={post.timestamp}
+                                body={post.body}
+                                author={post.author}
+                                voteScore={post.voteScore}
+                                commentCount={post.commentCount} />
+                        ))
+                    }
                 </List>
             </div>
         )
@@ -41,10 +58,13 @@ class Posts extends Component {
 
 
 
+
+
 const mapStateToProps = ({ appState }) => {
     return {
         categorySelected: appState.categorySelected,
-        posts: appState.posts
+        posts: appState.posts,
+        postSelected: appState.postSelected
     }
 }
 
@@ -52,7 +72,7 @@ const mapDispatchToProps = dispatch => {
     return {
         addCategories: (data) => dispatch(addCategories(data)),
         addPosts: (data) => dispatch(addPosts(data)),
-        addPost: (data) => dispatch(addPost(data))
+        addComments: (data) => dispatch(addComments(data))
     }
 }
 
@@ -60,3 +80,6 @@ export default compose(withStyles(styles), connect(
     mapStateToProps,
     mapDispatchToProps
 ))(Posts)
+
+
+export const hello = Posts.prototype.hello;

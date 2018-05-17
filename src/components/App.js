@@ -8,7 +8,6 @@ import { withStyles } from 'material-ui/styles';
 import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
-import List from 'material-ui/List';
 import Typography from 'material-ui/Typography';
 
 //Local
@@ -46,9 +45,8 @@ const styles = theme => ({
 class App extends Component {
 
   componentDidMount = () => {
-    this.getAllCategories()
-    this.getAllPosts()
-
+    this.getAllCategories();
+    this.getAllPosts();
   }
 
   getAllCategories = () => {
@@ -61,11 +59,11 @@ class App extends Component {
 
   getAllPosts = () => {
     PostsAPI.getAllPosts().then((posts) => {
-      this.props.addPosts({
-        posts: posts
-      })
+        this.props.addPosts({
+            posts: posts
+        });
     })
-  }
+}
 
   render() {
 

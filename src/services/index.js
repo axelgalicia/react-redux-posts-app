@@ -20,3 +20,18 @@ export function getAllPosts() {
         .then(data => data)
 }
 
+export function getPostsByCategory(category) {
+
+    return fetch(`${API}/${category}/posts`, { headers })
+        .then((res) => res.json())
+        .then(data => data)
+}
+
+
+export function getCommentsByPostId(postId) {
+
+    return fetch(`${API}/posts/${postId}/comments`, { headers })
+        .then((res) => res.json())
+        .then(data => data)
+}
+

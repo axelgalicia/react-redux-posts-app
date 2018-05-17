@@ -13,6 +13,7 @@ export const UP_VOTE_POST = 'UP_VOTE_POST'
 export const DOWN_VOTE_POST = 'DOWN_VOTE_POST'
 //Comments
 export const SELECT_COMMENT = 'SELECT_COMMENT'
+export const ADD_COMMENTS = 'ADD_COMMENTS'
 export const ADD_COMMENT = 'ADD_COMMENT'
 export const EDIT_COMMENT = 'EDIT_COMMENT'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
@@ -35,9 +36,9 @@ export const selectCategory = ({ category }) => ({
     category
 });
 
-export const selectPost = ({ post }) => ({
+export const selectPost = ({ postId }) => ({
     type: SELECT_POST,
-    post
+    postId
 });
 
 export const editPost = ({ post }) => ({
@@ -79,6 +80,11 @@ export const downVotePost = ({ post }) => ({
 export const selectComment = ({ comment }) => ({
     type: SELECT_COMMENT,
     comment
+})
+
+export const addComments = ({ comments }) => ({
+    type: ADD_COMMENTS,
+    comments
 })
 
 export const addComment = ({ postId, comment }) => ({
