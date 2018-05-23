@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 //React-Redux
 import { connect } from 'react-redux';
-//Compose
-import { compose } from 'recompose';
 //Material-UI
 import Avatar from 'material-ui/Avatar';
 import Dialog, {
@@ -29,28 +27,14 @@ import CommentIcon from '@material-ui/icons/Comment';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ModeEditIcon from '@material-ui/icons/ModeEdit';
 import GradeIcon from '@material-ui/icons/Grade';
+import Tooltip from '@material-ui/core/Tooltip';
+
 //Timestamp
 import Timestamp from 'react-timestamp';
 //Local
 import { addCategories, addPosts, addPost, addComments, selectPost, ALL_CATEGORIES } from '../actions';
 import Comment from './Comment'
 import * as PostsAPI from '../services'
-
-const styles = theme => ({
-    comments: {
-        marginLeft: 100,
-        marginTop: 20,
-        maxWidth: 1000,
-        minWidth: 200,
-    },
-    margin: {
-        margin: theme.spacing.unit * 1,
-    },
-    root: {
-        width: '100%',
-        backgroundColor: theme.palette.background.paper,
-    },
-});
 
 
 class Post extends Component {
@@ -60,12 +44,16 @@ class Post extends Component {
 
     }
 
+    clickPost = (id) => {
+        this.props.selectPost({ postId: id });
+        this.getComments();
+    }
+
     getComments = () => {
-        if (this.props.postSelected) {
-            PostsAPI.getCommentsByPostId(this.props.postSelected).then((comments) => {
-                this.props.addComments({ comments: comments })
-            })
-        }
+        PostsAPI.getCommentsByPostId(this.props.id).then((comments) => {
+            this.props.addComments({ comments: comments })
+        })
+
     }
 
     render() {
@@ -77,14 +65,12 @@ class Post extends Component {
         const { selectPost } = this.props
 
 
-        if (categorySelected ==! ALL_CATEGORIES) {
-            this.getComments();
-        }
+
 
         return (
 
             <div>
-                <ListItem button onClick={() => selectPost({ postId: id })}>
+                <ListItem button onClick={() => this.clickPost(id)}>
 
                     <Grid item xs={12} sm={3}>
                         <Avatar>
@@ -97,35 +83,44 @@ class Post extends Component {
                         <ListItemSecondaryAction>
                             <IconButton aria-label="Comments">
                                 {
-                                    commentCount > 0 ? <Badge className={classes.margin} badgeContent={commentCount} color="primary">
+                                    commentCount > 0 ? <Badge badgeContent={commentCount} color="primary">
                                         <CommentIcon /></Badge> : <CommentIcon />
                                 }
 
                             </IconButton>
 
-
-                            <IconButton aria-label="ModeEditIcon">
-                                <ModeEditIcon />
-                            </IconButton>
-                            <IconButton aria-label="Delete">
-                                <DeleteIcon />
-                            </IconButton>
-                            <IconButton aria-label="Vote Up">
-                                <ThumbUp />
-                            </IconButton>
-                            <IconButton aria-label="Vote Down">
-                                <ThumbDown />
-                            </IconButton>
-                            <IconButton aria-label="Votes">
-                                <Badge className={classes.margin} badgeContent={voteScore} color="primary">
-                                    <GradeIcon />
-                                </Badge>
-                            </IconButton>
+                            <Tooltip title="Edit">
+                                <IconButton aria-label="ModeEditIcon">
+                                    <ModeEditIcon />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Delete">
+                                <IconButton aria-label="Delete">
+                                    <DeleteIcon />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Vote Up">
+                                <IconButton aria-label="Vote Up">
+                                    <ThumbUp />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Vote Down">
+                                <IconButton aria-label="Vote Down">
+                                    <ThumbDown />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Votes">
+                                <IconButton aria-label="Votes">
+                                    <Badge badgeContent={voteScore} color="primary">
+                                        <GradeIcon />
+                                    </Badge>
+                                </IconButton>
+                            </Tooltip>
                         </ListItemSecondaryAction>
                     </Grid>
                 </ListItem>
 
-                <Grid container className={classes.comments} spacing={8} alignItems="stretch" direction="column" justify="center">
+                <Grid container spacing={8} alignItems="stretch" direction="column" justify="center">
                     {
                         comments.map((post) => (
                             <Comment
@@ -165,7 +160,7 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default compose(withStyles(styles), connect(
+export default connect(
     mapStateToProps,
     mapDispatchToProps
-))(Post)
+)(Post)

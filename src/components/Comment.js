@@ -9,6 +9,7 @@ import { withStyles } from 'material-ui/styles';
 import Card, { CardActions, CardContent } from 'material-ui/Card';
 import Badge from 'material-ui/Badge';
 import Typography from 'material-ui/Typography';
+import Tooltip from '@material-ui/core/Tooltip';
 
 //Icons
 import ThumbUp from '@material-ui/icons/ThumbUp';
@@ -65,33 +66,42 @@ class Comment extends Component {
                     <CardContent>
                         <Typography className={classes.title} color="textSecondary">
                             {author}
-                </Typography>
+                        </Typography>
                         <Typography className={classes.title} color="textSecondary">
                             <Timestamp time={new Date(timestamp).toISOString()} format='full' />
                         </Typography>
                         <Typography component="p">
                             {body}
-                </Typography>
+                        </Typography>
                     </CardContent>
                     <CardActions>
-    
-                        <IconButton aria-label="ModeEditIcon">
-                            <ModeEditIcon />
-                        </IconButton>
-                        <IconButton aria-label="Delete">
-                            <DeleteIcon />
-                        </IconButton>
-                        <IconButton aria-label="Vote Up">
-                            <ThumbUp />
-                        </IconButton>
-                        <IconButton aria-label="Vote Down">
-                            <ThumbDown />
-                        </IconButton>
-                        <IconButton aria-label="Votes">
-                            <Badge className={classes.margin} badgeContent={voteScore} color="primary" >
-                                <GradeIcon />
-                            </Badge>
-                        </IconButton>
+                        <Tooltip title="Edit" placement='top'>
+                            <IconButton aria-label="ModeEditIcon">
+                                <ModeEditIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Delete" placement='top'>
+                            <IconButton aria-label="Delete">
+                                <DeleteIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Vote up" placement='top'>
+                            <IconButton aria-label="Vote Up">
+                                <ThumbUp />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Vote Down" placement='top'>
+                            <IconButton aria-label="Vote Down">
+                                <ThumbDown />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Votes" placement='top'>
+                            <IconButton aria-label="Votes">
+                                <Badge className={classes.margin} badgeContent={voteScore} color="primary" >
+                                    <GradeIcon />
+                                </Badge>
+                            </IconButton>
+                        </Tooltip>
                     </CardActions>
 
                 </Card>

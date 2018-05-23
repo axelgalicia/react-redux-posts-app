@@ -14,19 +14,13 @@ import * as PostsAPI from '../services'
 import Post from './Post'
 
 const styles = theme => ({
-    margin: {
-        margin: theme.spacing.unit * 1,
-    },
-    root: {
-        width: '100%',
-        backgroundColor: theme.palette.background.paper,
-    },
+
 });
 
 class Posts extends Component {
 
     componentDidMount = () => {
-
+            console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$', this.props.posts)
     }
 
     render() {
@@ -35,7 +29,7 @@ class Posts extends Component {
         const { classes, posts, categorySelected } = this.props
 
         return (
-            <div className={classes.root}>
+            <div>
                 <List>
                     {
                         posts.map((post) => (
@@ -76,10 +70,7 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default compose(withStyles(styles), connect(
+export default connect(
     mapStateToProps,
     mapDispatchToProps
-))(Posts)
-
-
-export const hello = Posts.prototype.hello;
+)(Posts)

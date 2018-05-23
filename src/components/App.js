@@ -2,6 +2,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
+//Router
+import { Route } from 'react-router-dom'
 
 //Material-UI
 import { withStyles } from 'material-ui/styles';
@@ -46,7 +48,6 @@ class App extends Component {
 
   componentDidMount = () => {
     this.getAllCategories();
-    this.getAllPosts();
   }
 
   getAllCategories = () => {
@@ -59,11 +60,11 @@ class App extends Component {
 
   getAllPosts = () => {
     PostsAPI.getAllPosts().then((posts) => {
-        this.props.addPosts({
-            posts: posts
-        });
+      this.props.addPosts({
+        posts: posts
+      });
     })
-}
+  }
 
   render() {
 
@@ -88,7 +89,8 @@ class App extends Component {
           }}
         >
           <div className={classes.toolbar} />
-          <Categories />
+          <Route path="/:category" children={({ match }) => (<Categories match={match} />)} />
+
         </Drawer>
         <main className={classes.content}>
           <div className={classes.toolbar} />

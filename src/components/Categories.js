@@ -11,6 +11,7 @@ import { ListItemIcon, ListItemText } from 'material-ui/List';
 import ListSubheader from 'material-ui/List/ListSubheader';
 import { withStyles } from 'material-ui/styles';
 import Divider from 'material-ui/Divider';
+import Tooltip from '@material-ui/core/Tooltip';
 
 //Icons
 import StarIcon from '@material-ui/icons/Star';
@@ -24,7 +25,7 @@ import * as PostsAPI from '../services'
 
 const styles = theme => ({
     menuItem: {
-        '&:focus': {
+        '&:selected': {
             backgroundColor: theme.palette.primary.main,
             '& $primary, & $icon': {
                 color: theme.palette.common.white,
@@ -41,6 +42,15 @@ const styles = theme => ({
 
 class Categories extends Component {
 
+    componentDidMount = () => {
+        let match = this.props.match;
+        if(match && match.params.category) {
+            this.clickCategory(match.params.category);
+        } else {
+            this.clickCategory(ALL_CATEGORIES);
+        }
+    }
+
     clickCategory = (category) => {
         this.props.selectCategory({ category: category });
         this.getPosts(category);
@@ -51,6 +61,7 @@ class Categories extends Component {
         if (category === ALL_CATEGORIES) {
             this.getAllPosts()
         } else {
+            console.log('################################### ###', category)
             this.getPostsByCategory(category)
         }
     }
@@ -76,14 +87,14 @@ class Categories extends Component {
     render() {
 
         //Props
-        const { categories, classes } = this.props
+        const { categories, classes, categorySelected } = this.props
         // Props actions
         const { selectCategory } = this.props
 
         return (
             <div>
                 <MenuList role="menu" subheader={<ListSubheader>Categories</ListSubheader>}>
-                    <MenuItem className={classes.menuItem} onClick={() => this.clickCategory(ALL_CATEGORIES)}>
+                    <MenuItem className={classes.menuItem} onClick={() => this.clickCategory(ALL_CATEGORIES)} selected={categorySelected === ALL_CATEGORIES}>
                         <ListItemIcon className={classes.icon}>
                             <StarIcon />
                         </ListItemIcon>
@@ -93,7 +104,7 @@ class Categories extends Component {
 
                     {categories.map((category) => ([
                         <Divider />,
-                        <MenuItem key={category.path} className={classes.menuItem} onClick={() => this.clickCategory(category.path)}>
+                        <MenuItem key={category.path} className={classes.menuItem} onClick={() => this.clickCategory(category.path)} selected={categorySelected === category.path}>
                             <ListItemIcon className={classes.icon}>
                                 <StarIcon />
                             </ListItemIcon>
@@ -101,18 +112,21 @@ class Categories extends Component {
 
                         </MenuItem>
                     ]))}
-                    <Button variant="fab" mini color="secondary" aria-label="add" className={classes.button}>
-                        <AddIcon />
-                    </Button>
-
-                    <Button variant="fab" mini color="secondary" aria-label="sortByVotes" className={classes.button}>
-                        <SortByVotesIcon />
-                    </Button>
-
-                    <Button variant="fab" mini color="secondary" aria-label="sortByTimestamp" className={classes.button}>
-                        <TimeIcon />
-                    </Button>
-
+                    <Tooltip title="Add posts">
+                        <Button variant="fab" mini color="secondary" aria-label="add" className={classes.button}>
+                            <AddIcon />
+                        </Button>
+                    </Tooltip>
+                    <Tooltip title="Sort by votes">
+                        <Button variant="fab" mini color="secondary" aria-label="sortByVotes" className={classes.button}>
+                            <SortByVotesIcon />
+                        </Button>
+                    </Tooltip>
+                    <Tooltip title="Sort by date">
+                        <Button variant="fab" mini color="secondary" aria-label="sortByTimestamp" className={classes.button}>
+                            <TimeIcon />
+                        </Button>
+                    </Tooltip>
 
 
 
@@ -127,7 +141,8 @@ class Categories extends Component {
 
 const mapStateToProps = ({ appState }) => {
     return {
-        categories: appState.categories
+        categories: appState.categories,
+        categorySelected: appState.categorySelected
     }
 }
 
