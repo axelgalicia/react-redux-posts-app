@@ -20,7 +20,12 @@ const styles = theme => ({
 class Posts extends Component {
 
     componentDidMount = () => {
-            console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$', this.props.posts)
+        let match = this.props.match;
+        if (match && match.params.postId) {
+            
+        } else {
+            
+        }
     }
 
     render() {

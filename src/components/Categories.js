@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 //React-Redux
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
+//Router
+import { Link } from 'react-router-dom'
 
 //Material-UI
 import Button from 'material-ui/Button';
@@ -37,6 +39,9 @@ const styles = theme => ({
     button: {
         margin: theme.spacing.unit,
     },
+    link: {
+        textDecoration: 'none',
+    },
 });
 
 
@@ -44,7 +49,7 @@ class Categories extends Component {
 
     componentDidMount = () => {
         let match = this.props.match;
-        if(match && match.params.category) {
+        if (match && match.params.category) {
             this.clickCategory(match.params.category);
         } else {
             this.clickCategory(ALL_CATEGORIES);
@@ -93,24 +98,29 @@ class Categories extends Component {
 
         return (
             <div>
+
                 <MenuList role="menu" subheader={<ListSubheader>Categories</ListSubheader>}>
-                    <MenuItem className={classes.menuItem} onClick={() => this.clickCategory(ALL_CATEGORIES)} selected={categorySelected === ALL_CATEGORIES}>
-                        <ListItemIcon className={classes.icon}>
-                            <StarIcon />
-                        </ListItemIcon>
-                        <ListItemText classes={{ primary: classes.primary }} inset primary="All" />
-
-                    </MenuItem>
-
-                    {categories.map((category) => ([
-                        <Divider />,
-                        <MenuItem key={category.path} className={classes.menuItem} onClick={() => this.clickCategory(category.path)} selected={categorySelected === category.path}>
+                    <Link to="/" className={classes.link}>
+                        <MenuItem className={classes.menuItem} onClick={() => this.clickCategory(ALL_CATEGORIES)} selected={categorySelected === ALL_CATEGORIES}>
                             <ListItemIcon className={classes.icon}>
                                 <StarIcon />
                             </ListItemIcon>
-                            <ListItemText classes={{ primary: classes.primary }} inset primary={category.name} />
+                            <ListItemText classes={{ primary: classes.primary }} inset primary="All" />
 
                         </MenuItem>
+                    </Link>
+
+                    {categories.map((category) => ([
+                        <Divider />,
+                        <Link to={category.path} className={classes.link}>
+                            <MenuItem key={category.path} className={classes.menuItem} onClick={() => this.clickCategory(category.path)} selected={categorySelected === category.path}>
+                                <ListItemIcon className={classes.icon}>
+                                    <StarIcon />
+                                </ListItemIcon>
+                                <ListItemText classes={{ primary: classes.primary }} inset primary={category.name} />
+
+                            </MenuItem>
+                        </Link>
                     ]))}
                     <Tooltip title="Add posts">
                         <Button variant="fab" mini color="secondary" aria-label="add" className={classes.button}>

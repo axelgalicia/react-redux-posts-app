@@ -58,13 +58,6 @@ class App extends Component {
     })
   }
 
-  getAllPosts = () => {
-    PostsAPI.getAllPosts().then((posts) => {
-      this.props.addPosts({
-        posts: posts
-      });
-    })
-  }
 
   render() {
 
@@ -94,7 +87,8 @@ class App extends Component {
         </Drawer>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <Posts />
+          <Route path="/:category/:postId" children={({ match }) => (<Posts match={match} />)} />
+
         </main>
       </div>
 
