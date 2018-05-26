@@ -27,6 +27,13 @@ export function getPostsByCategory(category) {
         .then(data => data)
 }
 
+export function getPostById(postId) {
+
+    return fetch(`${API}/posts/${postId}`, { headers })
+        .then((res) => res.json())
+        .then(data => data)
+}
+
 
 export function getCommentsByPostId(postId) {
 

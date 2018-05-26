@@ -32,12 +32,17 @@ import Tooltip from '@material-ui/core/Tooltip';
 //Timestamp
 import Timestamp from 'react-timestamp';
 //Local
-import { addCategories, addPosts, addPost, addComments, selectPost, ALL_CATEGORIES } from '../actions';
+import { addCategories, addPosts, addPost, addComments, selectPost, deletePost, ALL_CATEGORIES } from '../actions';
 import Comment from './Comment'
 import * as PostsAPI from '../services'
 
 
 class Post extends Component {
+
+    state = {
+        comments: [],
+        showComments: false
+    }
 
 
     componentDidMount = () => {
@@ -49,9 +54,18 @@ class Post extends Component {
         this.getComments();
     }
 
+    deletePost = (id) => {
+        PostsAPI.getCommentsByPostId(this.props.id).then((comments) => {
+            this.props.deletePost(({id: this.props.id}));
+        })
+    }
+
     getComments = () => {
         PostsAPI.getCommentsByPostId(this.props.id).then((comments) => {
-            this.props.addComments({ comments: comments })
+            this.setState(({
+                comments: comments,
+                showComments: !this.state.showComments
+            }));
         })
 
     }
@@ -60,10 +74,14 @@ class Post extends Component {
 
 
         //Props
-        const { classes, categorySelected, comments, id, title, timestamp, body, author, voteScore, commentCount, postSelected } = this.props
+        const { classes, categorySelected, id, title, timestamp, body, author, voteScore, commentCount, postSelected } = this.props
         //Props actions
         const { selectPost } = this.props
 
+        //State
+        const { comments, showComments } = this.state
+
+        // console.log('comments', comments)
 
 
 
@@ -95,7 +113,7 @@ class Post extends Component {
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Delete">
-                                <IconButton aria-label="Delete">
+                                <IconButton aria-label="Delete" onClick={() => this.deletePost(id)}>
                                     <DeleteIcon />
                                 </IconButton>
                             </Tooltip>
@@ -122,17 +140,21 @@ class Post extends Component {
 
                 <Grid container spacing={8} alignItems="stretch" direction="column" justify="center">
                     {
-                        comments.map((post) => (
-                            <Comment
-                                key={post.id}
-                                id={post.id}
-                                title={post.title}
-                                timestamp={post.timestamp}
-                                body={post.body}
-                                author={post.author}
-                                voteScore={post.voteScore}
-                                commentCount={post.commentCount} />
-                        ))
+
+                        showComments ? (
+                            comments.map((comment) => (
+                                <Comment
+                                    key={comment.id}
+                                    id={comment.id}
+                                    title={comment.title}
+                                    timestamp={comment.timestamp}
+                                    body={comment.body}
+                                    author={comment.author}
+                                    voteScore={comment.voteScore}
+                                    commentCount={comment.commentCount} />
+                            ))
+
+                        ) : ''
                     }
 
                 </Grid>
@@ -146,8 +168,7 @@ const mapStateToProps = ({ appState }) => {
     return {
         categorySelected: appState.categorySelected,
         posts: appState.posts,
-        postSelected: appState.postSelected,
-        comments: appState.comments
+        postSelected: appState.postSelected
     }
 }
 
@@ -156,7 +177,7 @@ const mapDispatchToProps = dispatch => {
         addCategories: (data) => dispatch(addCategories(data)),
         addPosts: (data) => dispatch(addPosts(data)),
         selectPost: (data) => dispatch(selectPost(data)),
-        addComments: (data) => dispatch(addComments(data))
+        deletePost: (data) => dispatch(deletePost(data))
     }
 }
 

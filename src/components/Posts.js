@@ -9,7 +9,7 @@ import List from 'material-ui/List';
 
 
 //Local
-import { addCategories, addPosts, addPost, addComments, ALL_CATEGORIES } from '../actions'
+import { addCategories, addPosts, addComments, selectPost, ALL_CATEGORIES } from '../actions'
 import * as PostsAPI from '../services'
 import Post from './Post'
 
@@ -22,10 +22,15 @@ class Posts extends Component {
     componentDidMount = () => {
         let match = this.props.match;
         if (match && match.params.postId) {
-            
-        } else {
-            
+            this.getPostById(match.params.postId);
         }
+    }
+
+    getPostById = (postId) => {
+        PostsAPI.getPostById(postId).then((posts) => {
+            this.props.selectPost(postId);
+            this.props.addPosts({posts:[posts]});
+        });
     }
 
     render() {
@@ -70,6 +75,7 @@ const mapStateToProps = ({ appState }) => {
 const mapDispatchToProps = dispatch => {
     return {
         addCategories: (data) => dispatch(addCategories(data)),
+        selectPost: (data) => dispatch(selectPost(data)),
         addPosts: (data) => dispatch(addPosts(data)),
         addComments: (data) => dispatch(addComments(data))
     }

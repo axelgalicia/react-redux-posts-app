@@ -32,10 +32,11 @@ import { addCategories, addPosts, addPost } from '../actions';
 
 const styles = {
     card: {
+        marginLeft: 100,
         left: 100,
         minWidth: 275,
-        maxWidth: 2000,
-        maxHeight: 400,
+        maxWidth: 1000,
+        maxHeight: 200,
     },
     bullet: {
         display: 'inline-block',
