@@ -65,7 +65,7 @@ class Categories extends Component {
 
     getPosts = (category) => {
         if (category === ALL_CATEGORIES) {
-            this.getAllPosts()
+            this.getAllPosts();
         } else {
             this.getPostsByCategory(category)
         }
