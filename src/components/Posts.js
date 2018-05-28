@@ -9,7 +9,7 @@ import List from 'material-ui/List';
 
 
 //Local
-import { addCategories, addPosts, addComments, selectPost, ALL_CATEGORIES, show404, hide404 } from '../actions'
+import { addCategories, addPosts, selectPost, ALL_CATEGORIES, show404, hide404 } from '../actions'
 import * as PostsAPI from '../services'
 import Post from './Post'
 import My404 from './My404';
@@ -89,7 +89,6 @@ const mapDispatchToProps = dispatch => {
         addCategories: (data) => dispatch(addCategories(data)),
         selectPost: (data) => dispatch(selectPost(data)),
         addPosts: (data) => dispatch(addPosts(data)),
-        addComments: (data) => dispatch(addComments(data)),
         show404: () => dispatch(show404()),
         hide404: () => dispatch(hide404())
 

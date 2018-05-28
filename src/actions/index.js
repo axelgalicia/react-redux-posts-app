@@ -24,6 +24,7 @@ export const DOWN_VOTE_COMMENT = 'DOWN_VOTE_COMMENT'
 //Filters
 export const FILTER_BY_TIMESTAMP = 'FILTER_BY_TIMESTAMP'
 export const FILTER_BY_VOTES = 'FILTER_BY_VOTES'
+export const ORDER_BY = 'ORDER_BY'
 
 //UI
 export const SHOW_404 = 'SHOW_404'
@@ -81,52 +82,17 @@ export const downVotePost = ({ post }) => ({
 });
 
 
-export const selectComment = ({ comment }) => ({
-    type: SELECT_COMMENT,
-    comment
-})
-
-export const addComments = ({ comments }) => ({
-    type: ADD_COMMENTS,
-    comments
-})
-
-export const addComment = ({ postId, comment }) => ({
-    type: ADD_COMMENT,
-    postId,
-    comment
-})
-
-export const editComment = ({ comment }) => ({
-    type: EDIT_COMMENT,
-    comment
-})
-
-export const deleteComment = ({ comment }) => ({
-    type: DELETE_COMMENT,
-    comment
-})
-
-export const upVoteComment = ({ comment }) => ({
-    type: UP_VOTE_COMMENT,
-    comment
+export const filterByTimestamp = () => ({
+    type: FILTER_BY_TIMESTAMP
 });
 
-export const downVoteComment = ({ comment }) => ({
-    type: DOWN_VOTE_COMMENT,
-    comment
+export const filterByVotes = () => ({
+    type: FILTER_BY_VOTES
 });
 
-
-export const filterByTimestamp = ({ posts }) => ({
-    type: FILTER_BY_TIMESTAMP,
-    posts
-});
-
-export const filterByVotes = ({ posts }) => ({
-    type: FILTER_BY_VOTES,
-    posts
-});
+export const orderBy = () => ({
+    type: ORDER_BY
+})
 
 export const show404 = () => ({
     type: SHOW_404

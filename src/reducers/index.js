@@ -7,17 +7,11 @@ import {
     SELECT_POST,
     EDIT_POST,
     DELETE_POST,
-    SELECT_COMMENT,
-    ADD_COMMENTS,
-    ADD_COMMENT,
-    EDIT_COMMENT,
-    DELETE_COMMENT,
     UP_VOTE_POST,
     DOWN_VOTE_POST,
-    UP_VOTE_COMMENT,
-    DOWN_VOTE_COMMENT,
     FILTER_BY_TIMESTAMP,
     FILTER_BY_VOTES,
+    ORDER_BY,
     SHOW_404,
     HIDE_404
 } from '../actions'
@@ -35,7 +29,8 @@ const initialAppState = {
     categories: [],
     posts: [],
     comments: [],
-    show404: false
+    show404: false,
+    orderAsc: false
 }
 
 
@@ -127,80 +122,23 @@ function appState(state = initialAppState, action) {
                 ]
             }
 
-        case SELECT_COMMENT:
+        case ORDER_BY:
             return {
                 ...state,
-                commentSelected: comment.id,
-                postSelected: comment.parentId
-            }
-
-        case ADD_COMMENTS:
-            return {
-                ...state,
-                comments: comments
-            }
-
-        case ADD_COMMENT:
-            return {
-                ...state,
-                comments: [
-                    ...state.comments,
-                    comment
-                ]
-            }
-        case EDIT_COMMENT:
-            let indexEditComment = state.comments.findIndex(({ id }) => id === comment.id);
-            return {
-                ...state,
-                comments: [
-                    state.comments.slice(0, indexEditComment),
-                    comment,
-                    state.comments.slice(indexEditComment + 1)
-                ]
-            }
-        case DELETE_COMMENT:
-            return {
-                ...state,
-                comments: state.comments.filter(({ id }) => comment.id !== comment.id)
-            }
-        case UP_VOTE_COMMENT:
-            let indexUpVoteComment = state.comments.findIndex(({ id }) => id === comment.id);
-            return {
-                ...state,
-                comments: [
-                    ...state.comments.slice(0, indexUpVoteComment),
-                    {
-                        ...state.comments[indexUpVoteComment],
-                        voteScore: comment.voteScore + 1
-                    },
-                    ...state.comments.slice(indexUpVoteComment + 1)
-                ]
-            }
-        case DOWN_VOTE_COMMENT:
-            let indexDownVoteComment = state.comments.findIndex(({ id }) => id === comment.id);
-            return {
-                ...state,
-                comments: [
-                    ...state.comments.slice(0, indexDownVoteComment),
-                    {
-                        ...state.comments[indexDownVoteComment],
-                        voteScore: comment.voteScore - 1
-                    },
-                    ...state.comments.slice(indexDownVoteComment + 1)
-                ]
+                orderAsc: !state.orderAsc
             }
 
         case FILTER_BY_TIMESTAMP:
             let byTimePosts = cloneObject(state.posts);
             return {
                 ...state,
-                posts: byTimePosts.sort(orderByTimestamp)
+                posts: byTimePosts.sort(state.orderAsc ? orderByTimestampAsc : orderByTimestampDesc)
             }
         case FILTER_BY_VOTES:
             let byVotesPosts = cloneObject(state.posts);
             return {
                 ...state,
-                posts: byVotesPosts.sort(orderByTimestamp)
+                posts: byVotesPosts.sort(state.orderAsc ? orderByVotesAsc : orderByVotesDesc)
             }
         case SHOW_404:
             return {
@@ -218,12 +156,51 @@ function appState(state = initialAppState, action) {
     }
 }
 
-const orderByVotes = (a, b) => {
-    return a.voteScore - b.voteScore;
+const orderByVotesAsc = (a, b) => {
+
+    if (a.voteScore < b.voteScore) {
+        return -1;
+    }
+    if (a.voteScore > b.voteScore) {
+        return 1;
+    }
+
+    return 0;
 }
 
-const orderByTimestamp = (a, b) => {
-    return a.timestamp - b.timestamp;
+const orderByVotesDesc = (a, b) => {
+
+    if (b.voteScore < a.voteScore) {
+        return -1;
+    }
+    if (b.voteScore > a.voteScore) {
+        return 1;
+    }
+
+    return 0;
+}
+
+const orderByTimestampAsc = (a, b) => {
+    if (a.timestamp < b.timestamp) {
+        return -1;
+    }
+    if (a.timestamp > b.timestamp) {
+        return 1;
+    }
+
+    return 0;
+}
+
+const orderByTimestampDesc = (a, b) => {
+
+    if (b.timestamp < a.timestamp) {
+        return -1;
+    }
+    if (b.timestamp > a.timestamp) {
+        return 1;
+    }
+
+    return 0;
 }
 
 

@@ -21,7 +21,7 @@ import SortByVotesIcon from '@material-ui/icons/ThumbsUpDown';
 import TimeIcon from '@material-ui/icons/Today';
 
 //Local
-import { ALL_CATEGORIES, selectCategory, addPosts, show404, hide404 } from '../actions'
+import { ALL_CATEGORIES, selectCategory, addPosts, filterByTimestamp, filterByVotes, orderBy, show404, hide404 } from '../actions'
 import Posts from './Posts'
 import * as PostsAPI from '../services'
 
@@ -87,12 +87,22 @@ class Categories extends Component {
         })
     }
 
+    filterByVotes = () => {
+        this.props.orderBy()
+        this.props.filterByVotes()
+    }
+
+    filterByTimestamp = () => {
+        this.props.orderBy()
+        this.props.filterByTimestamp()
+    }
+
 
 
     render() {
 
         //Props
-        const { categories, classes, categorySelected } = this.props
+        const { categories, classes, categorySelected, filterByTimestamp } = this.props
         // Props actions
         const { selectCategory } = this.props
 
@@ -128,12 +138,12 @@ class Categories extends Component {
                         </Button>
                     </Tooltip>
                     <Tooltip title="Sort by votes">
-                        <Button variant="fab" mini color="secondary" aria-label="sortByVotes" className={classes.button}>
+                        <Button variant="fab" mini color="secondary" aria-label="sortByVotes" className={classes.button} onClick={() => this.filterByVotes()}>
                             <SortByVotesIcon />
                         </Button>
                     </Tooltip>
                     <Tooltip title="Sort by date">
-                        <Button variant="fab" mini color="secondary" aria-label="sortByTimestamp" className={classes.button}>
+                        <Button variant="fab" mini color="secondary" aria-label="sortByTimestamp" className={classes.button} onClick={() => this.filterByTimestamp()}>
                             <TimeIcon />
                         </Button>
                     </Tooltip>
@@ -160,6 +170,9 @@ const mapDispatchToProps = dispatch => {
     return {
         selectCategory: (data) => dispatch(selectCategory(data)),
         addPosts: (data) => dispatch(addPosts(data)),
+        filterByTimestamp: () => dispatch(filterByTimestamp()),
+        filterByVotes: () => dispatch(filterByVotes()),
+        orderBy: () => dispatch(orderBy()),
         show404: () => dispatch(show404()),
         hide404: () => dispatch(hide404())
     }
