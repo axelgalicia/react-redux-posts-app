@@ -52,6 +52,8 @@ class Post extends Component {
     clickPost = (id) => {
         this.props.selectPost({ postId: id });
         this.getComments();
+        this.setState(({ showComments: !this.state.showComments }))
+
     }
 
     deletePost = (id) => {
@@ -74,20 +76,21 @@ class Post extends Component {
     getComments = () => {
         PostsAPI.getCommentsByPostId(this.props.id).then((comments) => {
             this.setState(({
-                comments: comments,
-                showComments: !this.state.showComments
+                comments: comments
             }));
         })
 
     }
 
     deleteComment = (id) => {
-        console.log(id)
         PostsAPI.deleteComment(id).then((comments) => {
             this.setState(({
-                comments: this.state.comments.filter(({ id }) => id !== id)
+                comments: this.state.comments.filter(({ id }) => id !== id),
+                showComments: true
             }))
         })
+
+        this.getComments();
     }
 
     render() {
