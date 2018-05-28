@@ -59,7 +59,7 @@ class Categories extends Component {
     clickCategory = (category) => {
         this.props.selectCategory({ category: category });
         this.getPosts(category);
-        this.props.hide404()
+        this.props.hide404();
     }
 
 
