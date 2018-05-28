@@ -32,7 +32,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 //Timestamp
 import Timestamp from 'react-timestamp';
 //Local
-import { addCategories, addPosts, addPost, addComments, selectPost, deletePost, ALL_CATEGORIES } from '../actions';
+import { addCategories, addPosts, addPost, addComments, selectPost, deletePost, ALL_CATEGORIES, upVotePost, downVotePost } from '../actions';
 import Comment from './Comment'
 import * as PostsAPI from '../services'
 
@@ -55,8 +55,19 @@ class Post extends Component {
     }
 
     deletePost = (id) => {
-        PostsAPI.getCommentsByPostId(this.props.id).then((comments) => {
-            this.props.deletePost(({id: this.props.id}));
+        PostsAPI.deletePost(id).then((comments) => {
+            this.props.deletePost(({ post: { id: id } }));
+        })
+    }
+
+    votePost = (id, vote) => {
+
+        PostsAPI.votePost(id, vote).then((post) => {
+            if (vote === '+') {
+                this.props.upVotePost(({ post: post }))
+            } else {
+                this.props.downVotePost(({ post: post }))
+            }
         })
     }
 
@@ -68,6 +79,15 @@ class Post extends Component {
             }));
         })
 
+    }
+
+    deleteComment = (id) => {
+        console.log(id)
+        PostsAPI.deleteComment(id).then((comments) => {
+            this.setState(({
+                comments: this.state.comments.filter(({ id }) => id !== id)
+            }))
+        })
     }
 
     render() {
@@ -88,6 +108,7 @@ class Post extends Component {
         return (
 
             <div>
+                {id}
                 <ListItem button onClick={() => this.clickPost(id)}>
 
                     <Grid item xs={12} sm={3}>
@@ -118,12 +139,12 @@ class Post extends Component {
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Vote Up">
-                                <IconButton aria-label="Vote Up">
+                                <IconButton aria-label="Vote Up" onClick={() => this.votePost(id, '+')}>
                                     <ThumbUp />
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Vote Down">
-                                <IconButton aria-label="Vote Down">
+                                <IconButton aria-label="Vote Down" onClick={() => this.votePost(id, '-')}>
                                     <ThumbDown />
                                 </IconButton>
                             </Tooltip>
@@ -143,15 +164,18 @@ class Post extends Component {
 
                         showComments ? (
                             comments.map((comment) => (
-                                <Comment
-                                    key={comment.id}
-                                    id={comment.id}
-                                    title={comment.title}
-                                    timestamp={comment.timestamp}
-                                    body={comment.body}
-                                    author={comment.author}
-                                    voteScore={comment.voteScore}
-                                    commentCount={comment.commentCount} />
+
+                                comment.deleted ? '' :
+                                    <Comment
+                                        key={comment.id}
+                                        id={comment.id}
+                                        title={comment.title}
+                                        timestamp={comment.timestamp}
+                                        body={comment.body}
+                                        author={comment.author}
+                                        voteScore={comment.voteScore}
+                                        commentCount={comment.commentCount}
+                                        deleteComment={this.deleteComment} />
                             ))
 
                         ) : ''
@@ -177,7 +201,9 @@ const mapDispatchToProps = dispatch => {
         addCategories: (data) => dispatch(addCategories(data)),
         addPosts: (data) => dispatch(addPosts(data)),
         selectPost: (data) => dispatch(selectPost(data)),
-        deletePost: (data) => dispatch(deletePost(data))
+        deletePost: (data) => dispatch(deletePost(data)),
+        upVotePost: (data) => dispatch(upVotePost(data)),
+        downVotePost: (data) => dispatch(downVotePost(data))
     }
 }
 

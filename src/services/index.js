@@ -1,7 +1,16 @@
 const API = 'http://localhost:3001'
 
 const headers = {
-    'Authorization': '123'
+    'Authorization': '123',
+    'Content-Type': 'application/json'
+}
+
+const upVote = {
+    "option": "upVote"
+}
+
+const downVote = {
+    "option": "downVote"
 }
 
 
@@ -30,10 +39,40 @@ export function getPostsByCategory(category) {
 export function getPostById(postId) {
 
     return fetch(`${API}/posts/${postId}`, { headers })
+    .then((res) => {
+        if(res.ok) {
+            return Promise.resolve(res.json())
+        }
+        else {
+            return Promise.resolve([])
+        }
+    })
+}
+
+
+export function votePost(postId, vote) {
+
+    return fetch(`${API}/posts/${postId}`, {
+        headers, method: 'POST', body: JSON.stringify(vote === '+' ? upVote : downVote)
+    })
         .then((res) => res.json())
         .then(data => data)
 }
 
+
+export function deletePost(postId) {
+
+    return fetch(`${API}/posts/${postId}`, { headers, method: 'DELETE' })
+        .then((res) => res.json())
+        .then(data => data)
+}
+
+export function deleteComment(commentId) {
+
+    return fetch(`${API}/comments/${commentId}`, { headers, method: 'DELETE' })
+        .then((res) => res.json())
+        .then(data => data)
+}
 
 export function getCommentsByPostId(postId) {
 

@@ -21,7 +21,7 @@ import SortByVotesIcon from '@material-ui/icons/ThumbsUpDown';
 import TimeIcon from '@material-ui/icons/Today';
 
 //Local
-import { ALL_CATEGORIES, selectCategory, addPosts } from '../actions'
+import { ALL_CATEGORIES, selectCategory, addPosts, show404, hide404 } from '../actions'
 import Posts from './Posts'
 import * as PostsAPI from '../services'
 
@@ -59,6 +59,7 @@ class Categories extends Component {
     clickCategory = (category) => {
         this.props.selectCategory({ category: category });
         this.getPosts(category);
+        this.props.hide404()
     }
 
 
@@ -66,7 +67,6 @@ class Categories extends Component {
         if (category === ALL_CATEGORIES) {
             this.getAllPosts()
         } else {
-            console.log('################################### ###', category)
             this.getPostsByCategory(category)
         }
     }
@@ -159,7 +159,9 @@ const mapStateToProps = ({ appState }) => {
 const mapDispatchToProps = dispatch => {
     return {
         selectCategory: (data) => dispatch(selectCategory(data)),
-        addPosts: (data) => dispatch(addPosts(data))
+        addPosts: (data) => dispatch(addPosts(data)),
+        show404: () => dispatch(show404()),
+        hide404: () => dispatch(hide404())
     }
 }
 

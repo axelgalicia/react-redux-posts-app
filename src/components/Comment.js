@@ -27,6 +27,7 @@ import Timestamp from 'react-timestamp';
 
 //Local
 import { addCategories, addPosts, addPost } from '../actions';
+import * as PostsAPI from '../services'
 
 
 
@@ -55,9 +56,11 @@ const styles = {
 
 class Comment extends Component {
 
+
+
     render() {
 
-        const { classes, title, timestamp, body, author, voteScore } = this.props;
+        const { classes, id, title, timestamp, body, author, voteScore, deleteComment } = this.props;
         const bull = <span className={classes.bullet}>•</span>;
 
         return (
@@ -82,7 +85,7 @@ class Comment extends Component {
                             </IconButton>
                         </Tooltip>
                         <Tooltip title="Delete" placement='top'>
-                            <IconButton aria-label="Delete">
+                            <IconButton aria-label="Delete" onClick={() => deleteComment(id)}>
                                 <DeleteIcon />
                             </IconButton>
                         </Tooltip>

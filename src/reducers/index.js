@@ -17,7 +17,9 @@ import {
     UP_VOTE_COMMENT,
     DOWN_VOTE_COMMENT,
     FILTER_BY_TIMESTAMP,
-    FILTER_BY_VOTES
+    FILTER_BY_VOTES,
+    SHOW_404,
+    HIDE_404
 } from '../actions'
 //Redux
 import { combineReducers } from 'redux'
@@ -32,7 +34,8 @@ const initialAppState = {
     commentSelected: null,
     categories: [],
     posts: [],
-    comments: []
+    comments: [],
+    show404: false
 }
 
 
@@ -105,7 +108,7 @@ function appState(state = initialAppState, action) {
                     ...state.posts.slice(0, indexUpVotePost),
                     {
                         ...state.posts[indexUpVotePost],
-                        voteScore: post.voteScore + 1
+                        voteScore: post.voteScore
                     },
                     ...state.posts.slice(indexUpVotePost + 1)
                 ]
@@ -118,7 +121,7 @@ function appState(state = initialAppState, action) {
                     ...state.posts.slice(0, indexDownVotePost),
                     {
                         ...state.posts[indexDownVotePost],
-                        voteScore: post.voteScore - 1
+                        voteScore: post.voteScore
                     },
                     ...state.posts.slice(indexDownVotePost + 1)
                 ]
@@ -199,6 +202,17 @@ function appState(state = initialAppState, action) {
                 ...state,
                 posts: byVotesPosts.sort(orderByTimestamp)
             }
+        case SHOW_404:
+            return {
+                ...state,
+                show404: true
+            }
+        case HIDE_404:
+            return {
+                ...state,
+                show404: false
+            }
+
         default:
             return state
     }

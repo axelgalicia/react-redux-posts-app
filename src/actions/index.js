@@ -25,6 +25,10 @@ export const DOWN_VOTE_COMMENT = 'DOWN_VOTE_COMMENT'
 export const FILTER_BY_TIMESTAMP = 'FILTER_BY_TIMESTAMP'
 export const FILTER_BY_VOTES = 'FILTER_BY_VOTES'
 
+//UI
+export const SHOW_404 = 'SHOW_404'
+export const HIDE_404 = 'HIDE_404'
+
 
 export const addCategories = ({ categories }) => ({
     type: ADD_CATEGORIES,
@@ -123,6 +127,17 @@ export const filterByVotes = ({ posts }) => ({
     type: FILTER_BY_VOTES,
     posts
 });
+
+export const show404 = () => ({
+    type: SHOW_404
+});
+
+
+export const hide404 = () => ({
+    type: HIDE_404
+});
+
+
 
 
 

@@ -88,7 +88,6 @@ class App extends Component {
         <main className={classes.content}>
           <div className={classes.toolbar} />
           <Route path="/:category/:postId" children={({ match }) => (<Posts match={match} />)} />
-
         </main>
       </div>
 
