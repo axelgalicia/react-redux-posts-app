@@ -58,9 +58,10 @@ class Comment extends Component {
 
 
 
+
     render() {
 
-        const { classes, id, title, timestamp, body, author, voteScore, deleteComment } = this.props;
+        const { classes, id, title, timestamp, body, author, voteScore, deleteComment, voteComment } = this.props;
         const bull = <span className={classes.bullet}>•</span>;
 
         return (
@@ -90,12 +91,12 @@ class Comment extends Component {
                             </IconButton>
                         </Tooltip>
                         <Tooltip title="Vote up" placement='top'>
-                            <IconButton aria-label="Vote Up">
+                            <IconButton aria-label="Vote Up" onClick={() => voteComment(id, '+')}>
                                 <ThumbUp />
                             </IconButton>
                         </Tooltip>
                         <Tooltip title="Vote Down" placement='top'>
-                            <IconButton aria-label="Vote Down">
+                            <IconButton aria-label="Vote Down" onClick={() => voteComment(id, '-')}>
                                 <ThumbDown />
                             </IconButton>
                         </Tooltip>

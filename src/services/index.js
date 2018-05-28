@@ -59,6 +59,15 @@ export function votePost(postId, vote) {
         .then(data => data)
 }
 
+export function voteComment(conmmentId, vote) {
+
+    return fetch(`${API}/comments/${conmmentId}`, {
+        headers, method: 'POST', body: JSON.stringify(vote === '+' ? upVote : downVote)
+    })
+        .then((res) => res.json())
+        .then(data => data)
+}
+
 
 export function deletePost(postId) {
 

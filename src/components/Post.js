@@ -93,6 +93,13 @@ class Post extends Component {
         this.getComments();
     }
 
+
+    voteComment = (id, vote) => {
+        PostsAPI.voteComment(id, vote).then((comment) => {
+            this.getComments();
+        })
+    }
+
     render() {
 
 
@@ -178,7 +185,8 @@ class Post extends Component {
                                         author={comment.author}
                                         voteScore={comment.voteScore}
                                         commentCount={comment.commentCount}
-                                        deleteComment={this.deleteComment} />
+                                        deleteComment={this.deleteComment} 
+                                        voteComment={this.voteComment}/>
                             ))
 
                         ) : ''
