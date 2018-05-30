@@ -112,8 +112,10 @@ class Categories extends Component {
 
 
     addNewPost = () => {
-        if (!this.props.category === ALL_CATEGORIES) {
+        console.log(this.props.categorySelected)
+        if (this.props.categorySelected !== ALL_CATEGORIES) {
             this.setState({ showPostForm: true })
+          
         } else {
             this.setState({
                 showMessage: true,
@@ -127,7 +129,12 @@ class Categories extends Component {
         this.setState({ showPostForm: false })
     }
 
-    closeMessage = () => {
+    closeMessage = (event, reason) => {
+        console.log(event,reason)
+        if (reason === 'clickaway') {
+          return;
+        }
+    
         this.setState({ showMessage: false })
     }
 
@@ -153,24 +160,16 @@ class Categories extends Component {
                             horizontal: 'left',
                         }}
                         open={this.state.showMessage}
-                        autoHideDuration={1000}
+                        onClose={this.closeMessage}
+                        autoHideDuration={2000}
                         ContentProps={{
                             'aria-describedby': 'message-id',
                         }}
                         message={<span id="message-id">You need to chose a category first!</span>}
                         action={[
                             <Button key="undo" color="secondary" size="small" onClick={this.closeMessage}>
-                                UNDO
-            </Button>,
-                            <IconButton
-                                key="close"
-                                aria-label="Close"
-                                color="inherit"
-                                className={classes.close}
-                                onClick={this.closeMessage}
-                            >
-                                <CloseIcon />
-                            </IconButton>,
+                                OK
+            </Button>
                         ]}
                     />
                 </div>
