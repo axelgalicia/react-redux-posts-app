@@ -118,7 +118,7 @@ class Post extends Component {
         return (
 
             <div>
-                {id}
+               
                 <ListItem button onClick={() => this.clickPost(id)}>
 
                     <Grid item xs={12} sm={3}>

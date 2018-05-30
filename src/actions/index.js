@@ -61,14 +61,9 @@ export const addPosts = ({ posts }) => ({
     posts
 });
 
-export const addPost = ({ id, timestamp, title, body, author, category }) => ({
+export const addPost = ({ post }) => ({
     type: ADD_POST,
-    id,
-    timestamp,
-    title,
-    body,
-    author,
-    category
+    post
 });
 
 export const upVotePost = ({ post }) => ({

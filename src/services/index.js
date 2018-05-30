@@ -29,6 +29,16 @@ export function getAllPosts() {
         .then(data => data)
 }
 
+export function addPost(post) {
+
+    return fetch(`${API}/posts/`, {
+        headers, method: 'POST', body: JSON.stringify(post)
+    })
+        .then((res) => res.json())
+        .then(data => data)
+}
+
+
 export function getPostsByCategory(category) {
 
     return fetch(`${API}/${category}/posts`, { headers })
