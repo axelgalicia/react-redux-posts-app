@@ -14,15 +14,21 @@ import ListSubheader from 'material-ui/List/ListSubheader';
 import { withStyles } from 'material-ui/styles';
 import Divider from 'material-ui/Divider';
 import Tooltip from '@material-ui/core/Tooltip';
+import Snackbar from '@material-ui/core/Snackbar';
+import Slide from '@material-ui/core/Slide';
 
 //Icons
 import StarIcon from '@material-ui/icons/Star';
 import SortByVotesIcon from '@material-ui/icons/ThumbsUpDown';
 import TimeIcon from '@material-ui/icons/Today';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+
 
 //Local
 import { ALL_CATEGORIES, selectCategory, addPosts, filterByTimestamp, filterByVotes, orderBy, show404, hide404 } from '../actions'
 import Posts from './Posts'
+import PostForm from './PostForm'
 import * as PostsAPI from '../services'
 
 const styles = theme => ({
@@ -46,6 +52,13 @@ const styles = theme => ({
 
 
 class Categories extends Component {
+
+
+    state = {
+        showPostForm: false,
+        showMessage: false,
+        message: null
+    }
 
     componentDidMount = () => {
         let match = this.props.match;
@@ -98,6 +111,26 @@ class Categories extends Component {
     }
 
 
+    addNewPost = () => {
+        if (!this.props.category === ALL_CATEGORIES) {
+            this.setState({ showPostForm: true })
+        } else {
+            this.setState({
+                showMessage: true,
+                message: 'You need to chose a category first'
+            })
+        }
+
+    }
+
+    close = () => {
+        this.setState({ showPostForm: false })
+    }
+
+    closeMessage = () => {
+        this.setState({ showMessage: false })
+    }
+
 
     render() {
 
@@ -106,54 +139,89 @@ class Categories extends Component {
         // Props actions
         const { selectCategory } = this.props
 
+        //State 
+        const { showPostForm } = this.state
+
         return (
-            <div>
 
-                <MenuList role="menu" subheader={<ListSubheader>Categories</ListSubheader>}>
-                    <Link to="/" className={classes.link}>
-                        <MenuItem className={classes.menuItem} onClick={() => this.clickCategory(ALL_CATEGORIES)} selected={categorySelected === ALL_CATEGORIES}>
-                            <ListItemIcon className={classes.icon}>
-                                <StarIcon />
-                            </ListItemIcon>
-                            <ListItemText classes={{ primary: classes.primary }} inset primary="All" />
+            <div id="mainApp">
+                <div id="postForm">
+                    <PostForm open={showPostForm} post={{ id: null }} close={this.close} editMode={false} category={categorySelected} />
+                    <Snackbar
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'left',
+                        }}
+                        open={this.state.showMessage}
+                        autoHideDuration={1000}
+                        ContentProps={{
+                            'aria-describedby': 'message-id',
+                        }}
+                        message={<span id="message-id">You need to chose a category first!</span>}
+                        action={[
+                            <Button key="undo" color="secondary" size="small" onClick={this.closeMessage}>
+                                UNDO
+            </Button>,
+                            <IconButton
+                                key="close"
+                                aria-label="Close"
+                                color="inherit"
+                                className={classes.close}
+                                onClick={this.closeMessage}
+                            >
+                                <CloseIcon />
+                            </IconButton>,
+                        ]}
+                    />
+                </div>
 
-                        </MenuItem>
-                    </Link>
 
-                    {categories.map((category) => ([
-                        <Divider />,
-                        <Link to={category.path} className={classes.link}>
-                            <MenuItem key={category.path} className={classes.menuItem} onClick={() => this.clickCategory(category.path)} selected={categorySelected === category.path}>
+                <div id="menu">
+
+                    <MenuList role="menu" subheader={<ListSubheader>Categories</ListSubheader>}>
+                        <Link to="/" className={classes.link}>
+                            <MenuItem className={classes.menuItem} onClick={() => this.clickCategory(ALL_CATEGORIES)} selected={categorySelected === ALL_CATEGORIES}>
                                 <ListItemIcon className={classes.icon}>
                                     <StarIcon />
                                 </ListItemIcon>
-                                <ListItemText classes={{ primary: classes.primary }} inset primary={category.name} />
+                                <ListItemText classes={{ primary: classes.primary }} inset primary="All" />
 
                             </MenuItem>
                         </Link>
-                    ]))}
-                    <Tooltip title="Add posts">
-                        <Button variant="fab" mini color="secondary" aria-label="add" className={classes.button}>
-                            <AddIcon />
-                        </Button>
-                    </Tooltip>
-                    <Tooltip title="Sort by votes">
-                        <Button variant="fab" mini color="secondary" aria-label="sortByVotes" className={classes.button} onClick={() => this.filterByVotes()}>
-                            <SortByVotesIcon />
-                        </Button>
-                    </Tooltip>
-                    <Tooltip title="Sort by date">
-                        <Button variant="fab" mini color="secondary" aria-label="sortByTimestamp" className={classes.button} onClick={() => this.filterByTimestamp()}>
-                            <TimeIcon />
-                        </Button>
-                    </Tooltip>
 
+                        {categories.map((category) => ([
+                            <Divider />,
+                            <Link to={category.path} className={classes.link}>
+                                <MenuItem key={category.path} className={classes.menuItem} onClick={() => this.clickCategory(category.path)} selected={categorySelected === category.path}>
+                                    <ListItemIcon className={classes.icon}>
+                                        <StarIcon />
+                                    </ListItemIcon>
+                                    <ListItemText classes={{ primary: classes.primary }} inset primary={category.name} />
 
+                                </MenuItem>
+                            </Link>
+                        ]))}
+                        <Tooltip title="Add posts">
+                            <Button variant="fab" mini color="secondary" aria-label="add" className={classes.button} onClick={this.addNewPost}>
+                                <AddIcon />
+                            </Button>
+                        </Tooltip>
+                        <Tooltip title="Sort by votes">
+                            <Button variant="fab" mini color="secondary" aria-label="sortByVotes" className={classes.button} onClick={() => this.filterByVotes()}>
+                                <SortByVotesIcon />
+                            </Button>
+                        </Tooltip>
+                        <Tooltip title="Sort by date">
+                            <Button variant="fab" mini color="secondary" aria-label="sortByTimestamp" className={classes.button} onClick={() => this.filterByTimestamp()}>
+                                <TimeIcon />
+                            </Button>
+                        </Tooltip>
 
-                    TimeIcon
+                    </MenuList>
+                </div >
 
-                </MenuList>
             </div >
+
         )
     }
 
@@ -177,6 +245,8 @@ const mapDispatchToProps = dispatch => {
         hide404: () => dispatch(hide404())
     }
 }
+
+
 
 export default compose(withStyles(styles), connect(
     mapStateToProps,
