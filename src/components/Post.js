@@ -120,7 +120,7 @@ class Post extends Component {
 
 
         //Props
-        const { classes, categorySelected, id, title, timestamp, body, author, voteScore, commentCount, postSelected } = this.props
+        const { classes, category, categorySelected, id, title, timestamp, body, author, voteScore, commentCount, postSelected } = this.props
         //Props actions
         const { selectPost } = this.props
 
@@ -133,7 +133,8 @@ class Post extends Component {
             id: id,
             author: author,
             body: body,
-            title: title
+            title: title,
+            category: category
         }
 
 

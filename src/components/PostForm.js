@@ -15,7 +15,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 import { ALL_CATEGORIES } from '../actions'
 import * as PostsAPI from '../services'
-import { addPost } from '../actions'
+import { addPost, editPost } from '../actions'
 
 const uuidv1 = require('uuid/v1');
 
@@ -92,9 +92,9 @@ class PostForm extends Component {
         post.title = this.state.title;
         console.log('after update', post);
 
-        /*PostsAPI.addPost(post).then((post) => {
+        PostsAPI.editPost(post).then((post) => {
             this.props.editPost({ post: post });
-        })*/
+        })
         this.props.close()
     }
 
@@ -115,7 +115,7 @@ class PostForm extends Component {
                     <DialogTitle id="form-dialog-title">{editMode ? post.title : 'Create Post'}</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                            Category: {categorySelected}
+                            Category: {editMode ? post.category: categorySelected}
                         </DialogContentText>
 
 
@@ -180,7 +180,8 @@ const mapStateToProps = ({ appState }) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        addPost: (data) => dispatch(addPost(data))
+        addPost: (data) => dispatch(addPost(data)),
+        editPost: (data) => dispatch(editPost(data))
     }
 }
 

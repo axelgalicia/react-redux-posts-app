@@ -62,7 +62,8 @@ class Posts extends Component {
                                     body={post.body}
                                     author={post.author}
                                     voteScore={post.voteScore}
-                                    commentCount={post.commentCount} />
+                                    commentCount={post.commentCount}
+                                    category={post.category} />
                             ))
                         )}
                 </List>

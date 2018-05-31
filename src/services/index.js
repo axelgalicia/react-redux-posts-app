@@ -49,14 +49,14 @@ export function getPostsByCategory(category) {
 export function getPostById(postId) {
 
     return fetch(`${API}/posts/${postId}`, { headers })
-    .then((res) => {
-        if(res.ok) {
-            return Promise.resolve(res.json())
-        }
-        else {
-            return Promise.resolve([])
-        }
-    })
+        .then((res) => {
+            if (res.ok) {
+                return Promise.resolve(res.json())
+            }
+            else {
+                return Promise.resolve([])
+            }
+        })
 }
 
 
@@ -78,6 +78,13 @@ export function voteComment(conmmentId, vote) {
         .then(data => data)
 }
 
+
+export function editPost(post) {
+
+    return fetch(`${API}/posts/${post.id}`, { headers, method: 'PUT', body: JSON.stringify(post) })
+        .then((res) => res.json())
+        .then(data => data)
+}
 
 export function deletePost(postId) {
 
