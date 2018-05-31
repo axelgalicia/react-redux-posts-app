@@ -153,7 +153,7 @@ class Categories extends Component {
 
             <div id="mainApp">
                 <div id="postForm">
-                    <PostForm open={showPostForm} post={{ id: null }} close={this.close} editMode={false} />
+                    <PostForm open={showPostForm} post={null} close={this.close} editMode={false} />
                     <Snackbar
                         anchorOrigin={{
                             vertical: 'bottom',

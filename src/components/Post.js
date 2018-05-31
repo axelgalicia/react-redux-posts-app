@@ -34,6 +34,7 @@ import Timestamp from 'react-timestamp';
 //Local
 import { addCategories, addPosts, addPost, addComments, selectPost, deletePost, ALL_CATEGORIES, upVotePost, downVotePost } from '../actions';
 import Comment from './Comment'
+import PostForm from './PostForm'
 import * as PostsAPI from '../services'
 
 
@@ -41,7 +42,8 @@ class Post extends Component {
 
     state = {
         comments: [],
-        showComments: false
+        showComments: false,
+        showPostForm: false,
     }
 
 
@@ -52,8 +54,14 @@ class Post extends Component {
     clickPost = (id) => {
         this.props.selectPost({ postId: id });
         this.getComments();
-        this.setState(({ showComments: !this.state.showComments }))
+        this.setState(({
+            showComments: !this.state.showComments
+        }))
 
+    }
+
+    editPostClick = () => {
+        this.setState({ showPostForm: true })
     }
 
     deletePost = (id) => {
@@ -100,6 +108,14 @@ class Post extends Component {
         })
     }
 
+    editPost = () => {
+        this.setState({ showPostForm: true })
+    }
+
+    close = () => {
+        this.setState({ showPostForm: false })
+    }
+
     render() {
 
 
@@ -109,16 +125,22 @@ class Post extends Component {
         const { selectPost } = this.props
 
         //State
-        const { comments, showComments } = this.state
+        const { comments, showComments, showPostForm } = this.state
 
         // console.log('comments', comments)
 
+        const postObj = {
+            id: id,
+            author: author,
+            body: body,
+            title: title
+        }
 
 
         return (
 
             <div>
-               
+                <PostForm open={showPostForm} post={postObj} close={this.close} editMode={true} />
                 <ListItem button onClick={() => this.clickPost(id)}>
 
                     <Grid item xs={12} sm={3}>
@@ -139,7 +161,7 @@ class Post extends Component {
                             </IconButton>
 
                             <Tooltip title="Edit">
-                                <IconButton aria-label="ModeEditIcon">
+                                <IconButton aria-label="ModeEditIcon" onClick={() => this.editPostClick()}>
                                     <ModeEditIcon />
                                 </IconButton>
                             </Tooltip>
@@ -185,8 +207,8 @@ class Post extends Component {
                                         author={comment.author}
                                         voteScore={comment.voteScore}
                                         commentCount={comment.commentCount}
-                                        deleteComment={this.deleteComment} 
-                                        voteComment={this.voteComment}/>
+                                        deleteComment={this.deleteComment}
+                                        voteComment={this.voteComment} />
                             ))
 
                         ) : ''

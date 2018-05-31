@@ -38,6 +38,15 @@ class PostForm extends Component {
 
     componentDidMount() {
 
+        let post = this.props.post
+        if (this.props.editMode) {
+            this.setState({
+                title: post.title,
+                author: post.author,
+                body: post.body
+            })
+        }
+
     }
 
     handleInputChange = (event) => {
@@ -73,9 +82,27 @@ class PostForm extends Component {
     }
 
 
+    updatePost = () => {
+
+        let post = this.props.post;
+
+        console.log('before update:', post);
+        post.author = this.state.author;
+        post.body = this.state.body;
+        post.title = this.state.title;
+        console.log('after update', post);
+
+        /*PostsAPI.addPost(post).then((post) => {
+            this.props.editPost({ post: post });
+        })*/
+        this.props.close()
+    }
+
+
     render() {
 
         const { classes, open, close, editMode, post, categorySelected } = this.props
+        const { title, author, body, } = this.state
 
         return (
             <div>
@@ -88,17 +115,20 @@ class PostForm extends Component {
                     <DialogTitle id="form-dialog-title">{editMode ? post.title : 'Create Post'}</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                            Category: {editMode ? post.category : categorySelected}
+                            Category: {categorySelected}
                         </DialogContentText>
+
 
                         <TextField
                             autoFocus
+                            disabled={editMode}
                             margin="dense"
                             id="author"
                             name="author"
                             label="Author"
                             type="text"
                             fullWidth
+                            value={author}
                             onChange={this.handleInputChange}
                         />
 
@@ -110,17 +140,19 @@ class PostForm extends Component {
                             label="Title"
                             type="text"
                             fullWidth
+                            value={title}
                             onChange={this.handleInputChange}
                         />
 
                         <TextField
                             id="body"
                             name="body"
-                            label="With placeholder multiline"
+                            label="Body"
                             placeholder="Body of post"
                             multiline
                             margin="normal"
                             className={classes.textField}
+                            value={body}
                             onChange={this.handleInputChange}
                         />
 
@@ -130,7 +162,7 @@ class PostForm extends Component {
                         <Button onClick={() => close()} color="primary">
                             Cancel
             </Button>
-                        <Button onClick={() => this.createPost()} color="primary">
+                        <Button onClick={() => editMode ? this.updatePost() : this.createPost()} color="primary">
                             {editMode ? 'Update' : 'Create'}
                         </Button>
                     </DialogActions>
