@@ -35,9 +35,11 @@ class CommentForm extends Component {
     }
 
     componentDidMount() {
+       
 
         let comment = this.props.comment
         if (this.props.editMode) {
+            console.log('EDIT MODE')
             this.setState({
                 title: comment.title,
                 author: comment.author,
@@ -67,13 +69,16 @@ class CommentForm extends Component {
             author: this.state.author,
             timestamp: time,
             id: uuidv1(),
-            parentId: this.props.id
+            parentId: this.props.parentId
         }
-
-        console.log(comment);
 
         PostsAPI.addComment(comment).then((comment) => {
             this.props.getComments()
+            this.setState({
+                title: '',
+                author: '',
+                body: ''
+            })
             this.props.close()
         })
 

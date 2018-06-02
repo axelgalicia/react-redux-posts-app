@@ -45,7 +45,8 @@ class Post extends Component {
         comments: [],
         showComments: false,
         showPostForm: false,
-        showCommentForm: false
+        showCommentForm: false,
+        showCommentEditForm: false,
     }
 
 
@@ -73,8 +74,9 @@ class Post extends Component {
 
     addNewComment = (e) => {
         console.log('addNewComment',e)
+        this.setState({ showCommentEditForm: true })
         e.stopPropagation();
-        //this.setState({ showCommentForm: true })
+      
     }
 
     deletePost = (id) => {
@@ -136,6 +138,10 @@ class Post extends Component {
         this.setState({ showCommentForm: false })
     }
 
+    closeCommentEditForm = () => {
+        this.setState({showCommentEditForm: false})
+    }
+
     render() {
 
 
@@ -145,7 +151,7 @@ class Post extends Component {
         const { selectPost } = this.props
 
         //State
-        const { comments, showComments, showPostForm, showCommentForm } = this.state
+        const { comments, showComments, showPostForm, showCommentForm, showCommentEditForm } = this.state
 
         // console.log('comments', comments)
 
@@ -162,6 +168,7 @@ class Post extends Component {
 
             <div>
                 <PostForm open={showPostForm} post={postObj} close={this.close} editMode={true} />
+                <CommentForm parentId={id} open={showCommentEditForm} comment={null} close={this.closeCommentEditForm} editMode={false} getComments={this.getComments} />
                 <ListItem button onClick={(e) => this.clickPost(e,id)}>
 
                     <Grid item xs={12} sm={3}>
@@ -220,7 +227,7 @@ class Post extends Component {
                             comments.map((comment) => (
 
                                 comment.deleted ? '' : [
-                                    <CommentForm open={showCommentForm} comment={comment} close={this.closeCommentForm} editMode={true} getComments={this.getComments} />,
+                                    <CommentForm  key={comment.id + id} open={showCommentForm} comment={comment} close={this.closeCommentForm} editMode={true} getComments={this.getComments} />,
                                     <Comment
                                         key={comment.id}
                                         id={comment.id}
