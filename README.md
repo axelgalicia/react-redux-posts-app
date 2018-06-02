@@ -39,10 +39,10 @@ To get started and use the application just follow the below steps:
 ## Screenshots
 
 ### Main page
-![Main page](https://github.com/axelgalicia/react-redux-posts-app/blob/master/images/main_page.jpg)
+![Main page](https://github.com/axelgalicia/react-redux-posts-app/tree/master/src/images/main_page.jpg)
 
 ### Search Page
-![Search Page](https://github.com/axelgalicia/react-redux-posts-app/blob/master/images/editing.jpg)
+![Search Page](https://github.com/axelgalicia/react-redux-posts-app/tree/master/src/images/editing.jpg)
 
 **Author**: Axel Galicia, axelgalicia@gmail.com
 Last Version: 1.0.0
