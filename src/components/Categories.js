@@ -1,3 +1,10 @@
+/**
+ * Categories Component which holds the menu of the Categories
+ *
+ * @version 1.0.0
+ * @author [Axel Galicia](https://github.com/axelgalicia)
+ */
+
 import React, { Component } from 'react'
 //React-Redux
 import { connect } from 'react-redux'

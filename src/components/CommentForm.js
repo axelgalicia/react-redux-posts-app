@@ -1,3 +1,10 @@
+/**
+ * CommentForm Component
+ *
+ * @version 1.0.0
+ * @author [Axel Galicia](https://github.com/axelgalicia)
+ */
+
 //React-Redux
 import { connect } from 'react-redux'
 import { compose } from 'recompose'

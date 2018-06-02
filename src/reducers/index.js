@@ -1,3 +1,10 @@
+/**
+ * Reducers
+ *
+ * @version 1.0.0
+ * @author [Axel Galicia](https://github.com/axelgalicia)
+ */
+
 import {
     ALL_CATEGORIES,
     ADD_CATEGORIES,

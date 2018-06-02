@@ -1,3 +1,10 @@
+/**
+ * Main App component
+ *
+ * @version 1.0.0
+ * @author [Axel Galicia](https://github.com/axelgalicia)
+ */
+
 //React
 import React, { Component } from 'react'
 import { connect } from 'react-redux'

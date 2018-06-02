@@ -1,3 +1,10 @@
+/**
+ *   Posts Component
+ *
+ * @version 1.0.0
+ * @author [Axel Galicia](https://github.com/axelgalicia)
+ */
+
 import React, { Component, PropTypes } from 'react';
 //React-Redux
 import { connect } from 'react-redux'
