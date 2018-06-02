@@ -39,7 +39,6 @@ class CommentForm extends Component {
 
         let comment = this.props.comment
         if (this.props.editMode) {
-            console.log('EDIT MODE')
             this.setState({
                 title: comment.title,
                 author: comment.author,
@@ -93,12 +92,8 @@ class CommentForm extends Component {
         let time = new Date(now).getTime();
 
         let comment = this.props.comment;
-
-        console.log('before update:', comment);
         comment.timestamp = time;
         comment.body = this.state.body;
-
-        console.log('after update', comment);
 
         PostsAPI.editComment(comment).then((comment) => {
             this.props.getComments()

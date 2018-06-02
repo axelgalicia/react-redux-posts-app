@@ -63,7 +63,6 @@ class Comment extends Component {
 
     editComment = (e) => {
         this.setState({ showCommentForm: true })
-        console.log('Edit comment')
         e.stopPropagation()
      
     }

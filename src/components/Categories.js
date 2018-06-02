@@ -112,7 +112,6 @@ class Categories extends Component {
 
 
     addNewPost = () => {
-        console.log(this.props.categorySelected)
         if (this.props.categorySelected !== ALL_CATEGORIES) {
             this.setState({ showPostForm: true })
           
@@ -130,7 +129,6 @@ class Categories extends Component {
     }
 
     closeMessage = (event, reason) => {
-        console.log(event,reason)
         if (reason === 'clickaway') {
           return;
         }

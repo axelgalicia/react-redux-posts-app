@@ -73,7 +73,6 @@ class PostForm extends Component {
             id: uuidv1(),
         }
 
-        console.log(post);
 
         PostsAPI.addPost(post).then((post) => {
             this.props.addPost({ post: post });
@@ -85,12 +84,9 @@ class PostForm extends Component {
     updatePost = () => {
 
         let post = this.props.post;
-
-        console.log('before update:', post);
         post.author = this.state.author;
         post.body = this.state.body;
         post.title = this.state.title;
-        console.log('after update', post);
 
         PostsAPI.editPost(post).then((post) => {
             this.props.editPost({ post: post });

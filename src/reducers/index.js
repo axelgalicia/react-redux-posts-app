@@ -47,8 +47,6 @@ function appState(state = initialAppState, action) {
         type
     } = action
 
-    console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ' + post)
-
     switch (type) {
 
         case ADD_CATEGORIES:
