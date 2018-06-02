@@ -56,7 +56,6 @@ class Post extends Component {
 
     clickPost = (e, id) => {
         e.stopPropagation()
-        console.log('click post')
         this.props.selectPost({ postId: id });
         this.setState(({
             showComments: !this.state.showComments
@@ -68,12 +67,10 @@ class Post extends Component {
 
     editPostClick = (e) => {
         e.stopPropagation()
-        console.log('editPostClick')
         this.setState({ showPostForm: true })
     }
 
     addNewComment = (e) => {
-        console.log('addNewComment',e)
         this.setState({ showCommentEditForm: true })
         e.stopPropagation();
       
@@ -152,8 +149,6 @@ class Post extends Component {
 
         //State
         const { comments, showComments, showPostForm, showCommentForm, showCommentEditForm } = this.state
-
-        // console.log('comments', comments)
 
         const postObj = {
             id: id,
