@@ -34,6 +34,7 @@ import Timestamp from 'react-timestamp';
 //Local
 import { addCategories, addPosts, addPost, addComments, selectPost, deletePost, ALL_CATEGORIES, upVotePost, downVotePost } from '../actions';
 import Comment from './Comment'
+import CommentForm from './CommentForm'
 import PostForm from './PostForm'
 import * as PostsAPI from '../services'
 
@@ -44,6 +45,7 @@ class Post extends Component {
         comments: [],
         showComments: false,
         showPostForm: false,
+        showCommentForm: false
     }
 
 
@@ -51,17 +53,28 @@ class Post extends Component {
 
     }
 
-    clickPost = (id) => {
+    clickPost = (e, id) => {
+        e.stopPropagation()
+        console.log('click post')
         this.props.selectPost({ postId: id });
-        this.getComments();
         this.setState(({
             showComments: !this.state.showComments
         }))
+        this.getComments();
+
 
     }
 
-    editPostClick = () => {
+    editPostClick = (e) => {
+        e.stopPropagation()
+        console.log('editPostClick')
         this.setState({ showPostForm: true })
+    }
+
+    addNewComment = (e) => {
+        console.log('addNewComment',e)
+        e.stopPropagation();
+        //this.setState({ showCommentForm: true })
     }
 
     deletePost = (id) => {
@@ -70,8 +83,8 @@ class Post extends Component {
         })
     }
 
-    votePost = (id, vote) => {
-
+    votePost = (e,id, vote) => {
+        e.stopPropagation()
         PostsAPI.votePost(id, vote).then((post) => {
             if (vote === '+') {
                 this.props.upVotePost(({ post: post }))
@@ -90,7 +103,8 @@ class Post extends Component {
 
     }
 
-    deleteComment = (id) => {
+    deleteComment = (e, id) => {
+        e.stopPropagation()
         PostsAPI.deleteComment(id).then((comments) => {
             this.setState(({
                 comments: this.state.comments.filter(({ id }) => id !== id),
@@ -102,18 +116,24 @@ class Post extends Component {
     }
 
 
-    voteComment = (id, vote) => {
+    voteComment = (e, id, vote) => {
+        e.stopPropagation()
         PostsAPI.voteComment(id, vote).then((comment) => {
             this.getComments();
         })
     }
 
-    editPost = () => {
+    editPost = (e) => {
+        e.stopPropagation()
         this.setState({ showPostForm: true })
     }
 
     close = () => {
         this.setState({ showPostForm: false })
+    }
+
+    closeCommentForm = () => {
+        this.setState({ showCommentForm: false })
     }
 
     render() {
@@ -125,7 +145,7 @@ class Post extends Component {
         const { selectPost } = this.props
 
         //State
-        const { comments, showComments, showPostForm } = this.state
+        const { comments, showComments, showPostForm, showCommentForm } = this.state
 
         // console.log('comments', comments)
 
@@ -142,7 +162,7 @@ class Post extends Component {
 
             <div>
                 <PostForm open={showPostForm} post={postObj} close={this.close} editMode={true} />
-                <ListItem button onClick={() => this.clickPost(id)}>
+                <ListItem button onClick={(e) => this.clickPost(e,id)}>
 
                     <Grid item xs={12} sm={3}>
                         <Avatar>
@@ -153,31 +173,32 @@ class Post extends Component {
                     </Grid>
                     <Grid item xs={12} sm={9}>
                         <ListItemSecondaryAction>
-                            <IconButton aria-label="Comments">
-                                {
-                                    commentCount > 0 ? <Badge badgeContent={commentCount} color="primary">
-                                        <CommentIcon /></Badge> : <CommentIcon />
-                                }
+                            <Tooltip title="Add new comment">
+                                <IconButton aria-label="Comments" onClick={(e) => this.addNewComment(e)}>
+                                    {
+                                        commentCount > 0 ? <Badge badgeContent={commentCount} color="primary">
+                                            <CommentIcon /></Badge> : <CommentIcon />
+                                    }
 
-                            </IconButton>
-
+                                </IconButton>
+                            </Tooltip>
                             <Tooltip title="Edit">
-                                <IconButton aria-label="ModeEditIcon" onClick={() => this.editPostClick()}>
+                                <IconButton aria-label="ModeEditIcon" onClick={(e) => this.editPostClick(e)}>
                                     <ModeEditIcon />
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Delete">
-                                <IconButton aria-label="Delete" onClick={() => this.deletePost(id)}>
+                                <IconButton aria-label="Delete" onClick={(e) => this.deletePost(e,id)}>
                                     <DeleteIcon />
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Vote Up">
-                                <IconButton aria-label="Vote Up" onClick={() => this.votePost(id, '+')}>
+                                <IconButton aria-label="Vote Up" onClick={(e) => this.votePost(e,id, '+')}>
                                     <ThumbUp />
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Vote Down">
-                                <IconButton aria-label="Vote Down" onClick={() => this.votePost(id, '-')}>
+                                <IconButton aria-label="Vote Down" onClick={(e) => this.votePost(e,id, '-')}>
                                     <ThumbDown />
                                 </IconButton>
                             </Tooltip>
@@ -198,19 +219,21 @@ class Post extends Component {
                         showComments ? (
                             comments.map((comment) => (
 
-                                comment.deleted ? '' :
+                                comment.deleted ? '' : [
+                                    <CommentForm open={showCommentForm} comment={comment} close={this.closeCommentForm} editMode={true} getComments={this.getComments} />,
                                     <Comment
                                         key={comment.id}
                                         id={comment.id}
-                                        title={comment.title}
                                         timestamp={comment.timestamp}
                                         body={comment.body}
                                         author={comment.author}
                                         voteScore={comment.voteScore}
                                         commentCount={comment.commentCount}
                                         deleteComment={this.deleteComment}
-                                        voteComment={this.voteComment} />
-                            ))
+                                        voteComment={this.voteComment}
+                                        parentId={id}
+                                        getComments={this.getComments} />
+                                ]))
 
                         ) : ''
                     }

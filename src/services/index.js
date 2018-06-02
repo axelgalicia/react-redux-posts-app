@@ -38,6 +38,15 @@ export function addPost(post) {
         .then(data => data)
 }
 
+export function addComment(comment) {
+
+    return fetch(`${API}/comments/`, {
+        headers, method: 'POST', body: JSON.stringify(comment)
+    })
+        .then((res) => res.json())
+        .then(data => data)
+}
+
 
 export function getPostsByCategory(category) {
 
@@ -82,6 +91,14 @@ export function voteComment(conmmentId, vote) {
 export function editPost(post) {
 
     return fetch(`${API}/posts/${post.id}`, { headers, method: 'PUT', body: JSON.stringify(post) })
+        .then((res) => res.json())
+        .then(data => data)
+}
+
+
+export function editComment(comment) {
+
+    return fetch(`${API}/comments/${comment.id}`, { headers, method: 'PUT', body: JSON.stringify(comment) })
         .then((res) => res.json())
         .then(data => data)
 }
