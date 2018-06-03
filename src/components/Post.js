@@ -83,7 +83,7 @@ class Post extends Component {
       
     }
 
-    deletePost = (id) => {
+    deletePost = (e, id) => {
         PostsAPI.deletePost(id).then((comments) => {
             this.props.deletePost(({ post: { id: id } }));
         })
