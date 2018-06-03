@@ -41,7 +41,10 @@ To get started and use the application just follow the below steps:
 ### Main page
 ![Main page](https://github.com/axelgalicia/react-redux-posts-app/blob/master/src/images/main_page.png)
 
-### Search Page
+### Adding Post
+![Search Page](https://github.com/axelgalicia/react-redux-posts-app/blob/master/src/images/adding_post.png)
+
+### Edit Comment
 ![Search Page](https://github.com/axelgalicia/react-redux-posts-app/blob/master/src/images/editing.png)
 
 **Author**: Axel Galicia, axelgalicia@gmail.com
