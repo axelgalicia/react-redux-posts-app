@@ -26,6 +26,9 @@ To get started and use the application just follow the below steps:
  - When pressing the order buttons, user can see that if the button is pressed again it can chose between ordering in
  ascendant or descendant order.
 
+ ## See comments
+ - Just clicking on the Post directly and the comments will be displayed.
+
 
  ## Creating comments
 
