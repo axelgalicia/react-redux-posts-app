@@ -6,8 +6,6 @@
  */
 
 import React, { Component } from 'react';
-//React-Redux
-import { connect } from 'react-redux';
 //Compose
 import { compose } from 'recompose';
 
@@ -24,7 +22,6 @@ import ThumbDown from '@material-ui/icons/ThumbDown';
 
 
 import IconButton from 'material-ui/IconButton';
-import CommentIcon from '@material-ui/icons/Comment';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ModeEditIcon from '@material-ui/icons/ModeEdit';
 import GradeIcon from '@material-ui/icons/Grade';
@@ -33,8 +30,6 @@ import GradeIcon from '@material-ui/icons/Grade';
 import Timestamp from 'react-timestamp';
 
 //Local
-import { addCategories, addPosts, addPost } from '../actions';
-import * as PostsAPI from '../services'
 import CommentForm from './CommentForm';
 
 
@@ -82,7 +77,7 @@ class Comment extends Component {
     render() {
 
         const { classes, id, parentId, timestamp, body, author, voteScore, deleteComment, voteComment, getComments } = this.props;
-        const bull = <span className={classes.bullet}>•</span>;
+    
 
         const { showCommentForm } = this.state
 

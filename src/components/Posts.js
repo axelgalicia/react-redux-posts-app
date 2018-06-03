@@ -5,25 +5,19 @@
  * @author [Axel Galicia](https://github.com/axelgalicia)
  */
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 //React-Redux
 import { connect } from 'react-redux'
-//Compose
-import { compose } from 'recompose'
 //Material-UI
-import { withStyles } from 'material-ui/styles';
 import List from 'material-ui/List';
 
 
 //Local
-import { addCategories, addPosts, selectPost, ALL_CATEGORIES, show404, hide404 } from '../actions'
+import { addCategories, addPosts, selectPost, show404, hide404 } from '../actions'
 import * as PostsAPI from '../services'
 import Post from './Post'
 import My404 from './My404';
 
-const styles = theme => ({
-
-});
 
 class Posts extends Component {
 
@@ -52,7 +46,7 @@ class Posts extends Component {
     render() {
 
         //Props
-        const { classes, posts, categorySelected, show404Flag } = this.props
+        const { posts, show404Flag } = this.props
 
 
         return (

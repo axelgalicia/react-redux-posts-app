@@ -22,19 +22,15 @@ import { withStyles } from 'material-ui/styles';
 import Divider from 'material-ui/Divider';
 import Tooltip from '@material-ui/core/Tooltip';
 import Snackbar from '@material-ui/core/Snackbar';
-import Slide from '@material-ui/core/Slide';
 
 //Icons
 import StarIcon from '@material-ui/icons/Star';
 import SortByVotesIcon from '@material-ui/icons/ThumbsUpDown';
 import TimeIcon from '@material-ui/icons/Today';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
 
 
 //Local
 import { ALL_CATEGORIES, selectCategory, addPosts, filterByTimestamp, filterByVotes, orderBy, show404, hide404 } from '../actions'
-import Posts from './Posts'
 import PostForm from './PostForm'
 import * as PostsAPI from '../services'
 
@@ -147,9 +143,8 @@ class Categories extends Component {
     render() {
 
         //Props
-        const { categories, classes, categorySelected, filterByTimestamp } = this.props
-        // Props actions
-        const { selectCategory } = this.props
+        const { categories, classes, categorySelected } = this.props
+
 
         //State 
         const { showPostForm } = this.state

@@ -19,8 +19,6 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from '@material-ui/core/styles';
 
-
-import { ALL_CATEGORIES } from '../actions'
 import * as PostsAPI from '../services'
 import { addPost, editPost } from '../actions'
 
@@ -83,8 +81,15 @@ class PostForm extends Component {
 
         PostsAPI.addPost(post).then((post) => {
             this.props.addPost({ post: post });
+                this.setState({
+                    title: '',
+                    author: '',
+                    body: ''
+                })
+
+                this.props.close()
         })
-        this.props.close()
+       
     }
 
 

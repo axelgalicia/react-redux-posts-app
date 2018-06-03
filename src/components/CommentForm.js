@@ -5,8 +5,7 @@
  * @author [Axel Galicia](https://github.com/axelgalicia)
  */
 
-//React-Redux
-import { connect } from 'react-redux'
+
 import { compose } from 'recompose'
 //Material-UI
 import React, { Component } from 'react';
@@ -15,12 +14,9 @@ import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from '@material-ui/core/styles';
-
-
-import { ALL_CATEGORIES } from '../actions'
+//Local
 import * as PostsAPI from '../services'
 
 const uuidv1 = require('uuid/v1');
@@ -112,7 +108,7 @@ class CommentForm extends Component {
 
     render() {
 
-        const { classes, open, close, editMode, comment, categorySelected ,getComments} = this.props
+        const { classes, open, close, editMode} = this.props
         const { author, body } = this.state
 
         return (

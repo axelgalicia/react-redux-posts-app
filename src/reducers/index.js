@@ -49,8 +49,6 @@ function appState(state = initialAppState, action) {
         posts,
         post,
         postId,
-        comment,
-        comments,
         type
     } = action
 

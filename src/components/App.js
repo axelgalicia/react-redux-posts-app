@@ -23,7 +23,7 @@ import Typography from 'material-ui/Typography';
 import Categories from './Categories'
 import Posts from './Posts'
 import * as PostsAPI from '../services'
-import { addCategories, addPosts, addPost } from '../actions'
+import { addCategories, addPosts } from '../actions'
 
 const drawerWidth = 240;
 
@@ -68,8 +68,7 @@ class App extends Component {
 
   render() {
 
-    //Prop Actions
-    const { addPost } = this.props
+
     //Props
     const { classes } = this.props
 

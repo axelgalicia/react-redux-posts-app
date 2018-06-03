@@ -10,25 +10,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 //Material-UI
 import Avatar from 'material-ui/Avatar';
-import Dialog, {
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-} from 'material-ui/Dialog';
 import { ListItem, ListItemSecondaryAction, ListItemText } from 'material-ui/List';
 import Badge from 'material-ui/Badge';
-import { withStyles } from 'material-ui/styles';
-import Divider from 'material-ui/Divider';
-import Paper from 'material-ui/Paper';
-import Typography from 'material-ui/Typography';
 import Grid from 'material-ui/Grid';
 //Icons
 import MailIcon from '@material-ui/icons/Mail';
 import ThumbUp from '@material-ui/icons/ThumbUp';
 import ThumbDown from '@material-ui/icons/ThumbDown';
 
-import BeachAccessIcon from '@material-ui/icons/BeachAccess';
 import IconButton from 'material-ui/IconButton';
 import CommentIcon from '@material-ui/icons/Comment';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -39,7 +28,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 //Timestamp
 import Timestamp from 'react-timestamp';
 //Local
-import { addCategories, addPosts, addPost, addComments, selectPost, deletePost, ALL_CATEGORIES, upVotePost, downVotePost } from '../actions';
+import { addCategories, addPosts, selectPost, deletePost, upVotePost, downVotePost } from '../actions';
 import Comment from './Comment'
 import CommentForm from './CommentForm'
 import PostForm from './PostForm'
@@ -150,9 +139,7 @@ class Post extends Component {
 
 
         //Props
-        const { classes, category, categorySelected, id, title, timestamp, body, author, voteScore, commentCount, postSelected } = this.props
-        //Props actions
-        const { selectPost } = this.props
+        const { category, id, title, timestamp, body, author, voteScore, commentCount } = this.props
 
         //State
         const { comments, showComments, showPostForm, showCommentForm, showCommentEditForm } = this.state

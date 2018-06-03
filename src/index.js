@@ -6,7 +6,6 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import reducer from './reducers'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
-import My404 from './components/My404';
 
 const logger = store => next => action => {
     console.group(action.type)
