@@ -158,8 +158,18 @@ class Post extends Component {
         return (
 
             <div>
-                <PostForm open={showPostForm} post={postObj} close={this.close} editMode={true} />
-                <CommentForm parentId={id} open={showCommentEditForm} comment={null} close={this.closeCommentEditForm} editMode={false} getComments={this.getComments} />
+                <PostForm 
+                    open={showPostForm} 
+                    post={postObj} 
+                    close={this.close} 
+                    editMode={true} />
+                <CommentForm 
+                    parentId={id} 
+                    open={showCommentEditForm} 
+                    comment={null} 
+                    close={this.closeCommentEditForm} 
+                    editMode={false} 
+                    getComments={this.getComments} />
                 <ListItem button onClick={(e) => this.clickPost(e, id)}>
 
                     <Grid item xs={12} sm={3}>
@@ -218,7 +228,13 @@ class Post extends Component {
                             comments.map((comment) => (
 
                                 comment.deleted ? '' : [
-                                    <CommentForm key={comment.id + id} open={showCommentForm} comment={comment} close={this.closeCommentForm} editMode={true} getComments={this.getComments} />,
+                                    <CommentForm 
+                                        key={comment.id + id} 
+                                        open={showCommentForm} 
+                                        comment={comment} 
+                                        close={this.closeCommentForm} 
+                                        editMode={true} 
+                                        getComments={this.getComments} />,
                                     <Comment
                                         key={comment.id}
                                         id={comment.id}

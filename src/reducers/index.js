@@ -72,7 +72,7 @@ function appState(state = initialAppState, action) {
                 ...state,
                 postSelected: postId
             }
-        case EDIT_POST:
+        case EDIT_POST: {
             let indexEditPost = state.posts.findIndex(({ id }) => id === post.id);
             return {
                 ...state,
@@ -81,12 +81,14 @@ function appState(state = initialAppState, action) {
                     post,
                     ...state.posts.slice(indexEditPost + 1)]
             }
+
+        }
         case DELETE_POST:
             return {
                 ...state,
                 posts: state.posts.filter(({ id }) => id !== post.id)
             }
-        case UP_VOTE_POST:
+        case UP_VOTE_POST: {
             let indexUpVotePost = state.posts.findIndex(({ id }) => id === post.id);
             return {
                 ...state,
@@ -99,7 +101,10 @@ function appState(state = initialAppState, action) {
                     ...state.posts.slice(indexUpVotePost + 1)
                 ]
             }
-        case DOWN_VOTE_POST:
+
+        }
+
+        case DOWN_VOTE_POST: {
             let indexDownVotePost = state.posts.findIndex(({ id }) => id === post.id);
             return {
                 ...state,
@@ -112,6 +117,7 @@ function appState(state = initialAppState, action) {
                     ...state.posts.slice(indexDownVotePost + 1)
                 ]
             }
+        }
 
         case ORDER_BY:
             return {
@@ -119,18 +125,22 @@ function appState(state = initialAppState, action) {
                 orderAsc: !state.orderAsc
             }
 
-        case FILTER_BY_TIMESTAMP:
+        case FILTER_BY_TIMESTAMP: {
             let byTimePosts = cloneObject(state.posts);
             return {
                 ...state,
                 posts: byTimePosts.sort(state.orderAsc ? orderByTimestampAsc : orderByTimestampDesc)
             }
-        case FILTER_BY_VOTES:
+        }
+
+        case FILTER_BY_VOTES: {
             let byVotesPosts = cloneObject(state.posts);
             return {
                 ...state,
                 posts: byVotesPosts.sort(state.orderAsc ? orderByVotesAsc : orderByVotesDesc)
             }
+        }
+
         case SHOW_404:
             return {
                 ...state,
