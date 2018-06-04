@@ -5,7 +5,8 @@
  * @author [Axel Galicia](https://github.com/axelgalicia)
  */
 
-
+//React-Redux
+import { connect } from 'react-redux';
 import { compose } from 'recompose'
 //Material-UI
 import React, { Component } from 'react';
@@ -58,7 +59,7 @@ class CommentForm extends Component {
 
     handleInputChange = (event) => {
 
-        const { name, value } = this.props.target
+        const { name, value } = event.target
         this.setState({
             [name]: value
         })
@@ -69,17 +70,19 @@ class CommentForm extends Component {
         let now = new Date();
         let time = new Date(now).getTime();
         const { author, body } = this.state
+        const { getPosts, getComments, parentId, categorySelected } = this.props
         const comment = {
             body: body,
             author: author,
             timestamp: time,
             id: uuid(),
-            parentId: this.props.parentId
+            parentId: parentId
         }
 
         PostsAPI.addComment(comment).then((comment) => {
-            this.props.getComments()
+           // this.props.getComments()
             this.setState(defaultState)
+            getPosts(categorySelected)
             this.props.close()
         })
 
@@ -163,5 +166,14 @@ class CommentForm extends Component {
 }
 
 
+const mapStateToProps = ({ appState: { categorySelected } }) => {
+    return {
+        categorySelected
+    }
+}
 
-export default compose(withStyles(styles))(CommentForm)
+
+
+export default compose(withStyles(styles), connect(
+    mapStateToProps
+))(CommentForm)

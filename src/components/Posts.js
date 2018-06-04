@@ -13,7 +13,7 @@ import List from 'material-ui/List';
 
 
 //Local
-import { addCategories } from '../actions/categoryActions'
+import { addCategories, ALL_CATEGORIES } from '../actions/categoryActions'
 import { addPosts, selectPost } from '../actions/postActions'
 import { show404, hide404 } from '../actions'
 import * as PostsAPI from '../services'
@@ -45,6 +45,31 @@ class Posts extends Component {
         })
     }
 
+
+    getPosts = (category) => {
+        if (category === ALL_CATEGORIES) {
+            this.getAllPosts();
+        } else {
+            this.getPostsByCategory(category)
+        }
+    }
+
+    getPostsByCategory = (category) => {
+        PostsAPI.getPostsByCategory(category).then(posts => {
+            this.props.addPosts({
+                posts: posts
+            });
+        })
+    }
+
+    getAllPosts = () => {
+        PostsAPI.getAllPosts().then((posts) => {
+            this.props.addPosts({
+                posts: posts
+            });
+        })
+    }
+
     render() {
 
         //Props
@@ -66,7 +91,8 @@ class Posts extends Component {
                                     author={post.author}
                                     voteScore={post.voteScore}
                                     commentCount={post.commentCount}
-                                    category={post.category} />
+                                    category={post.category} 
+                                    getPosts={this.getPosts}/>
                             ))
                         )}
                 </List>

@@ -31,19 +31,20 @@ import Timestamp from 'react-timestamp';
 import { addCategories } from '../actions/categoryActions'
 import { addPosts, selectPost, deletePost, upVotePost, downVotePost  } from '../actions/postActions'
 import { dateFormatter } from '../utils/helpers'
+import Comment from './Comment'
 import CommentForm from './CommentForm'
 import PostForm from './PostForm'
 import * as PostsAPI from '../services'
 
 
-class Post extends Component {
+class PostDetails extends Component {
 
     state = {
         comments: [],
         showComments: false,
         showPostForm: false,
         showCommentForm: false,
-        showCommentEditForm: false
+        showCommentEditForm: false,
     }
 
 
@@ -54,6 +55,12 @@ class Post extends Component {
     clickPost = (e, id) => {
         e.stopPropagation()
         this.props.selectPost({ postId: id });
+        this.setState(({
+            showComments: !this.state.showComments
+        }))
+        this.getComments();
+
+
     }
 
     editPostClick = (e) => {
@@ -68,7 +75,6 @@ class Post extends Component {
     }
 
     deletePost = (e, id) => {
-        e.stopPropagation()
         PostsAPI.deletePost(id).then((comments) => {
             this.props.deletePost(({ post: { id: id } }));
         })
@@ -85,8 +91,34 @@ class Post extends Component {
         })
     }
 
+    getComments = () => {
+        PostsAPI.getCommentsByPostId(this.props.id).then((comments) => {
+            this.setState(({
+                comments: comments
+            }));
+        })
+
+    }
+
+    deleteComment = (e, id) => {
+        e.stopPropagation()
+        PostsAPI.deleteComment(id).then((comments) => {
+            this.setState(({
+                comments: this.state.comments.filter(({ id }) => id !== id),
+                showComments: true
+            }))
+        })
+
+        this.getComments();
+    }
 
 
+    voteComment = (e, id, vote) => {
+        e.stopPropagation()
+        PostsAPI.voteComment(id, vote).then((comment) => {
+            this.getComments();
+        })
+    }
 
     editPost = (e) => {
         e.stopPropagation()
@@ -109,10 +141,10 @@ class Post extends Component {
 
 
         //Props
-        const { category, id, title, timestamp, body, author, voteScore, commentCount, getPosts } = this.props
+        const { category, id, title, timestamp, body, author, voteScore, commentCount } = this.props
 
         //State
-        const { showPostForm, showCommentForm, showCommentEditForm } = this.state
+        const { comments, showComments, showPostForm, showCommentForm, showCommentEditForm } = this.state
 
         const postObj = {
             id: id,
@@ -137,7 +169,7 @@ class Post extends Component {
                     comment={null} 
                     close={this.closeCommentEditForm} 
                     editMode={false} 
-                    getPosts={getPosts} />
+                    getComments={this.getComments} />
                 <ListItem button onClick={(e) => this.clickPost(e, id)}>
 
                     <Grid item xs={12} sm={3}>
@@ -188,6 +220,39 @@ class Post extends Component {
                         </ListItemSecondaryAction>
                     </Grid>
                 </ListItem>
+
+                <Grid container spacing={8} alignItems="stretch" direction="column" justify="center">
+                    {
+
+                        showComments ? (
+                            comments.map((comment) => (
+
+                                comment.deleted ? '' : [
+                                    <CommentForm 
+                                        key={comment.id + id} 
+                                        open={showCommentForm} 
+                                        comment={comment} 
+                                        close={this.closeCommentForm} 
+                                        editMode={true} 
+                                        getComments={this.getComments} />,
+                                    <Comment
+                                        key={comment.id}
+                                        id={comment.id}
+                                        timestamp={comment.timestamp}
+                                        body={comment.body}
+                                        author={comment.author}
+                                        voteScore={comment.voteScore}
+                                        commentCount={comment.commentCount}
+                                        deleteComment={this.deleteComment}
+                                        voteComment={this.voteComment}
+                                        parentId={id}
+                                        getComments={this.getComments} />
+                                ]))
+
+                        ) : ''
+                    }
+
+                </Grid>
             </div>
         )
     }
@@ -216,4 +281,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(Post)
+)(PostDetails)
