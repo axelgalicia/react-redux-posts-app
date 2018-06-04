@@ -28,7 +28,9 @@ import Tooltip from '@material-ui/core/Tooltip';
 //Timestamp
 import Timestamp from 'react-timestamp';
 //Local
-import { addCategories, addPosts, selectPost, deletePost, upVotePost, downVotePost } from '../actions';
+import { addCategories } from '../actions/categoryActions'
+import { addPosts, selectPost, deletePost, upVotePost, downVotePost  } from '../actions/postActions'
+import { dateFormatter } from '../utils/helpers'
 import Comment from './Comment'
 import CommentForm from './CommentForm'
 import PostForm from './PostForm'
@@ -69,7 +71,7 @@ class Post extends Component {
     addNewComment = (e) => {
         this.setState({ showCommentEditForm: true })
         e.stopPropagation();
-      
+
     }
 
     deletePost = (e, id) => {
@@ -78,7 +80,7 @@ class Post extends Component {
         })
     }
 
-    votePost = (e,id, vote) => {
+    votePost = (e, id, vote) => {
         e.stopPropagation()
         PostsAPI.votePost(id, vote).then((post) => {
             if (vote === '+') {
@@ -132,7 +134,7 @@ class Post extends Component {
     }
 
     closeCommentEditForm = () => {
-        this.setState({showCommentEditForm: false})
+        this.setState({ showCommentEditForm: false })
     }
 
     render() {
@@ -158,13 +160,13 @@ class Post extends Component {
             <div>
                 <PostForm open={showPostForm} post={postObj} close={this.close} editMode={true} />
                 <CommentForm parentId={id} open={showCommentEditForm} comment={null} close={this.closeCommentEditForm} editMode={false} getComments={this.getComments} />
-                <ListItem button onClick={(e) => this.clickPost(e,id)}>
+                <ListItem button onClick={(e) => this.clickPost(e, id)}>
 
                     <Grid item xs={12} sm={3}>
                         <Avatar>
                             <MailIcon />
                         </Avatar>
-                        <ListItemText primary={author} secondary={<Timestamp time={new Date(timestamp).toISOString()} format='short' />} />
+                        <ListItemText primary={author} secondary={<Timestamp time={dateFormatter(timestamp)} format='short' />} />
                         <ListItemText primary={title} secondary={body} />
                     </Grid>
                     <Grid item xs={12} sm={9}>
@@ -184,17 +186,17 @@ class Post extends Component {
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Delete">
-                                <IconButton aria-label="Delete" onClick={(e) => this.deletePost(e,id)}>
+                                <IconButton aria-label="Delete" onClick={(e) => this.deletePost(e, id)}>
                                     <DeleteIcon />
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Vote Up">
-                                <IconButton aria-label="Vote Up" onClick={(e) => this.votePost(e,id, '+')}>
+                                <IconButton aria-label="Vote Up" onClick={(e) => this.votePost(e, id, '+')}>
                                     <ThumbUp />
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Vote Down">
-                                <IconButton aria-label="Vote Down" onClick={(e) => this.votePost(e,id, '-')}>
+                                <IconButton aria-label="Vote Down" onClick={(e) => this.votePost(e, id, '-')}>
                                     <ThumbDown />
                                 </IconButton>
                             </Tooltip>
@@ -216,7 +218,7 @@ class Post extends Component {
                             comments.map((comment) => (
 
                                 comment.deleted ? '' : [
-                                    <CommentForm  key={comment.id + id} open={showCommentForm} comment={comment} close={this.closeCommentForm} editMode={true} getComments={this.getComments} />,
+                                    <CommentForm key={comment.id + id} open={showCommentForm} comment={comment} close={this.closeCommentForm} editMode={true} getComments={this.getComments} />,
                                     <Comment
                                         key={comment.id}
                                         id={comment.id}
@@ -241,11 +243,11 @@ class Post extends Component {
 }
 
 
-const mapStateToProps = ({ appState }) => {
+const mapStateToProps = ({ appState: { categorySelected, posts, postSelected } }) => {
     return {
-        categorySelected: appState.categorySelected,
-        posts: appState.posts,
-        postSelected: appState.postSelected
+        categorySelected,
+        posts,
+        postSelected
     }
 }
 

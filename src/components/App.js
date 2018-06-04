@@ -23,7 +23,9 @@ import Typography from 'material-ui/Typography';
 import Categories from './Categories'
 import Posts from './Posts'
 import * as PostsAPI from '../services'
-import { addCategories, addPosts } from '../actions'
+import { addCategories } from '../actions/categoryActions'
+import { addPosts } from '../actions/postActions'
+
 
 const drawerWidth = 240;
 
@@ -102,10 +104,10 @@ class App extends Component {
 }
 
 
-const mapStateToProps = ({ appState }) => {
+const mapStateToProps = ({ appState: { categorySelected, categories } }) => {
   return {
-    categorySelected: appState.categorySelected,
-    categories: appState.categories
+    categorySelected,
+    categories
   }
 }
 

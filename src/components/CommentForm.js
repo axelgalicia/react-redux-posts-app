@@ -18,8 +18,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from '@material-ui/core/styles';
 //Local
 import * as PostsAPI from '../services'
+import { uuid } from '../utils'
 
-const uuidv1 = require('uuid/v1');
 
 const styles = theme => ({
 
@@ -28,6 +28,12 @@ const styles = theme => ({
     }
 
 })
+
+const defaultState = {
+    title: '',
+    author: '',
+    body: ''
+}
 
 class CommentForm extends Component {
 
@@ -38,9 +44,8 @@ class CommentForm extends Component {
     }
 
     componentDidMount() {
-       
+        const { comment } = this.props
 
-        let comment = this.props.comment
         if (this.props.editMode) {
             this.setState({
                 title: comment.title,
@@ -52,10 +57,8 @@ class CommentForm extends Component {
     }
 
     handleInputChange = (event) => {
-        const target = event.target;
-        const value = target.value;
-        const name = target.name;
 
+        const { name, value } = this.props.target
         this.setState({
             [name]: value
         })
@@ -65,31 +68,26 @@ class CommentForm extends Component {
 
         let now = new Date();
         let time = new Date(now).getTime();
-
-        let comment = {
-            body: this.state.body,
-            author: this.state.author,
+        const { author, body } = this.state
+        const comment = {
+            body: body,
+            author: author,
             timestamp: time,
-            id: uuidv1(),
+            id: uuid(),
             parentId: this.props.parentId
         }
 
         PostsAPI.addComment(comment).then((comment) => {
             this.props.getComments()
-            this.setState({
-                title: '',
-                author: '',
-                body: ''
-            })
+            this.setState(defaultState)
             this.props.close()
         })
 
-        
+
     }
 
 
     updateComment = () => {
-
 
         let now = new Date();
         let time = new Date(now).getTime();
@@ -102,13 +100,13 @@ class CommentForm extends Component {
             this.props.getComments()
             this.props.close()
         })
-        
+
     }
 
 
     render() {
 
-        const { classes, open, close, editMode} = this.props
+        const { classes, open, close, editMode } = this.props
         const { author, body } = this.state
 
         return (

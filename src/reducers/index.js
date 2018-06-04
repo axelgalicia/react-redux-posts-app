@@ -5,23 +5,11 @@
  * @author [Axel Galicia](https://github.com/axelgalicia)
  */
 
-import {
-    ALL_CATEGORIES,
-    ADD_CATEGORIES,
-    SELECT_CATEGORY,
-    ADD_POSTS,
-    ADD_POST,
-    SELECT_POST,
-    EDIT_POST,
-    DELETE_POST,
-    UP_VOTE_POST,
-    DOWN_VOTE_POST,
-    FILTER_BY_TIMESTAMP,
-    FILTER_BY_VOTES,
-    ORDER_BY,
-    SHOW_404,
-    HIDE_404
-} from '../actions'
+import { ALL_CATEGORIES, ADD_CATEGORIES, SELECT_CATEGORY } from '../actions/categoryActions'
+import { ADD_POSTS, ADD_POST, SELECT_POST, EDIT_POST, DELETE_POST, UP_VOTE_POST, DOWN_VOTE_POST } from '../actions/postActions'
+import { FILTER_BY_TIMESTAMP, FILTER_BY_VOTES, ORDER_BY } from '../actions/filterActions'
+import { SHOW_404, HIDE_404 } from '../actions'
+
 //Redux
 import { combineReducers } from 'redux'
 //Local

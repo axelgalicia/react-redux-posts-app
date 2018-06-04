@@ -30,7 +30,10 @@ import TimeIcon from '@material-ui/icons/Today';
 
 
 //Local
-import { ALL_CATEGORIES, selectCategory, addPosts, filterByTimestamp, filterByVotes, orderBy, show404, hide404 } from '../actions'
+import { ALL_CATEGORIES, selectCategory } from '../actions/categoryActions'
+import { addPosts } from '../actions/postActions'
+import { filterByTimestamp, filterByVotes, orderBy } from '../actions/filterActions'
+import { show404, hide404 } from '../actions'
 import PostForm from './PostForm'
 import * as PostsAPI from '../services'
 
@@ -226,10 +229,10 @@ class Categories extends Component {
 
 }
 
-const mapStateToProps = ({ appState }) => {
+const mapStateToProps = ({ appState: { categorySelected, categories } }) => {
     return {
-        categories: appState.categories,
-        categorySelected: appState.categorySelected
+        categories,
+        categorySelected
     }
 }
 

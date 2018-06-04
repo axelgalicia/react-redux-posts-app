@@ -13,7 +13,9 @@ import List from 'material-ui/List';
 
 
 //Local
-import { addCategories, addPosts, selectPost, show404, hide404 } from '../actions'
+import { addCategories } from '../actions/categoryActions'
+import { addPosts, selectPost } from '../actions/postActions'
+import { show404, hide404 } from '../actions'
 import * as PostsAPI from '../services'
 import Post from './Post'
 import My404 from './My404';
@@ -77,12 +79,12 @@ class Posts extends Component {
 
 
 
-const mapStateToProps = ({ appState }) => {
+const mapStateToProps = ({ appState: { categorySelected, posts, postSelected, show404Flag } }) => {
     return {
-        categorySelected: appState.categorySelected,
-        posts: appState.posts,
-        postSelected: appState.postSelected,
-        show404Flag: appState.show404
+        categorySelected,
+        posts,
+        postSelected,
+        show404Flag
     }
 }
 

@@ -6,16 +6,10 @@
  * @author [Axel Galicia](https://github.com/axelgalicia)
  */
 
-import React, { Component } from 'react'
+import React from 'react'
 
-class My404 extends Component {
-
-    render() {
-        return (
-            <h2>The posts does not exist</h2>
-        )
-    }
-
-}
+const My404 = () => (
+    <h2>The posts does not exist</h2>
+);
 
 export default My404

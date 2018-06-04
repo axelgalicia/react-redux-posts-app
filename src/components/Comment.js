@@ -31,6 +31,7 @@ import Timestamp from 'react-timestamp';
 
 //Local
 import CommentForm from './CommentForm';
+import { dateFormatter } from '../utils/helpers'
 
 
 
@@ -66,7 +67,7 @@ class Comment extends Component {
     editComment = (e) => {
         this.setState({ showCommentForm: true })
         e.stopPropagation()
-     
+
     }
 
     close = () => {
@@ -77,7 +78,7 @@ class Comment extends Component {
     render() {
 
         const { classes, id, parentId, timestamp, body, author, voteScore, deleteComment, voteComment, getComments } = this.props;
-    
+
 
         const { showCommentForm } = this.state
 
@@ -92,7 +93,7 @@ class Comment extends Component {
 
         return (
             <div>
-              <CommentForm comment={commentObj} open={showCommentForm} close={this.close} editMode={true} getComments={getComments}/>
+                <CommentForm comment={commentObj} open={showCommentForm} close={this.close} editMode={true} getComments={getComments} />
                 <Card className={classes.card}>
 
                     <CardContent>
@@ -100,7 +101,7 @@ class Comment extends Component {
                             {author}
                         </Typography>
                         <Typography className={classes.title} color="textSecondary">
-                            <Timestamp time={new Date(timestamp).toISOString()} format='full' />
+                            <Timestamp time={dateFormatter(timestamp)} format='full' />
                         </Typography>
                         <Typography component="p">
                             {body}
@@ -113,17 +114,17 @@ class Comment extends Component {
                             </IconButton>
                         </Tooltip>
                         <Tooltip title="Delete" placement='top'>
-                            <IconButton aria-label="Delete" onClick={(e) => deleteComment(e,id)}>
+                            <IconButton aria-label="Delete" onClick={(e) => deleteComment(e, id)}>
                                 <DeleteIcon />
                             </IconButton>
                         </Tooltip>
                         <Tooltip title="Vote up" placement='top'>
-                            <IconButton aria-label="Vote Up" onClick={(e) => voteComment(e,id, '+')}>
+                            <IconButton aria-label="Vote Up" onClick={(e) => voteComment(e, id, '+')}>
                                 <ThumbUp />
                             </IconButton>
                         </Tooltip>
                         <Tooltip title="Vote Down" placement='top'>
-                            <IconButton aria-label="Vote Down" onClick={(e) => voteComment(e,id, '-')}>
+                            <IconButton aria-label="Vote Down" onClick={(e) => voteComment(e, id, '-')}>
                                 <ThumbDown />
                             </IconButton>
                         </Tooltip>

@@ -20,9 +20,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from '@material-ui/core/styles';
 
 import * as PostsAPI from '../services'
-import { addPost, editPost } from '../actions'
-
-const uuidv1 = require('uuid/v1');
+import { addPost, editPost } from '../actions/postActions'
+import { uuid } from '../utils'
 
 const styles = theme => ({
 
@@ -31,6 +30,12 @@ const styles = theme => ({
     }
 
 })
+
+const defaultState = {
+    title: '',
+    author: '',
+    body: ''
+}
 
 class PostForm extends Component {
 
@@ -43,7 +48,7 @@ class PostForm extends Component {
 
     componentDidMount() {
 
-        let post = this.props.post
+        const { post } = this.props
         if (this.props.editMode) {
             this.setState({
                 title: post.title,
@@ -55,10 +60,7 @@ class PostForm extends Component {
     }
 
     handleInputChange = (event) => {
-        const target = event.target;
-        const value = target.value;
-        const name = target.name;
-
+        const { name, value } = event.target
         this.setState({
             [name]: value
         })
@@ -68,37 +70,34 @@ class PostForm extends Component {
 
         let now = new Date();
         let time = new Date(now).getTime();
+        const { title, body, author } = this.state
 
         let post = {
-            title: this.state.title,
-            body: this.state.body,
-            author: this.state.author,
+            title: title,
+            body: body,
+            author: author,
             category: this.props.categorySelected,
             timestamp: time,
-            id: uuidv1(),
+            id: uuid(),
         }
 
 
         PostsAPI.addPost(post).then((post) => {
             this.props.addPost({ post: post });
-                this.setState({
-                    title: '',
-                    author: '',
-                    body: ''
-                })
-
-                this.props.close()
+            this.setState(defaultState)
+            this.props.close()
         })
-       
+
     }
 
 
     updatePost = () => {
 
         let post = this.props.post;
-        post.author = this.state.author;
-        post.body = this.state.body;
-        post.title = this.state.title;
+        const { author, body, title } = this.state
+        post.author = author;
+        post.body = body;
+        post.title = title;
 
         PostsAPI.editPost(post).then((post) => {
             this.props.editPost({ post: post });
@@ -123,7 +122,7 @@ class PostForm extends Component {
                     <DialogTitle id="form-dialog-title">{editMode ? post.title : 'Create Post'}</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                            Category: {editMode ? post.category: categorySelected}
+                            Category: {editMode ? post.category : categorySelected}
                         </DialogContentText>
 
 
@@ -180,9 +179,9 @@ class PostForm extends Component {
     }
 }
 
-const mapStateToProps = ({ appState }) => {
+const mapStateToProps = ({ appState: { categorySelected } }) => {
     return {
-        categorySelected: appState.categorySelected
+        categorySelected
     }
 }
 
