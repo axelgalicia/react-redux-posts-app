@@ -6,6 +6,8 @@
 
 
 import React, { Component } from 'react';
+//Router
+import { Link, Redirect } from 'react-router-dom'
 //React-Redux
 import { connect } from 'react-redux';
 //Material-UI
@@ -29,7 +31,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Timestamp from 'react-timestamp';
 //Local
 import { addCategories } from '../actions/categoryActions'
-import { addPosts, selectPost, deletePost, upVotePost, downVotePost  } from '../actions/postActions'
+import { addPosts, selectPost, deletePost, upVotePost, downVotePost } from '../actions/postActions'
 import { dateFormatter } from '../utils/helpers'
 import CommentForm from './CommentForm'
 import PostForm from './PostForm'
@@ -52,9 +54,12 @@ class Post extends Component {
     }
 
     clickPost = (e, id) => {
+        console.log('HELLO')
         e.stopPropagation()
         this.props.selectPost({ postId: id });
     }
+
+
 
     editPostClick = (e) => {
         e.stopPropagation()
@@ -109,10 +114,12 @@ class Post extends Component {
 
 
         //Props
-        const { category, id, title, timestamp, body, author, voteScore, commentCount, getPosts } = this.props
+        const { category, id, title, timestamp, body, author, voteScore, commentCount, getPosts, location } = this.props
+
+        console.log('$$$$$$$$$$$$$$$$$$', location)
 
         //State
-        const { showPostForm, showCommentForm, showCommentEditForm } = this.state
+        const { showPostForm, showCommentForm, showCommentEditForm, redirect } = this.state
 
         const postObj = {
             id: id,
@@ -125,19 +132,22 @@ class Post extends Component {
 
         return (
 
-            <div>
-                <PostForm 
-                    open={showPostForm} 
-                    post={postObj} 
-                    close={this.close} 
+            <div>{id}
+
+                <PostForm
+                    open={showPostForm}
+                    post={postObj}
+                    close={this.close}
                     editMode={true} />
-                <CommentForm 
-                    parentId={id} 
-                    open={showCommentEditForm} 
-                    comment={null} 
-                    close={this.closeCommentEditForm} 
-                    editMode={false} 
+                <CommentForm
+                    parentId={id}
+                    open={showCommentEditForm}
+                    comment={null}
+                    close={this.closeCommentEditForm}
+                    editMode={false}
                     getPosts={getPosts} />
+
+
                 <ListItem button onClick={(e) => this.clickPost(e, id)}>
 
                     <Grid item xs={12} sm={3}>
@@ -145,7 +155,7 @@ class Post extends Component {
                             <MailIcon />
                         </Avatar>
                         <ListItemText primary={author} secondary={<Timestamp time={dateFormatter(timestamp)} format='short' />} />
-                        <ListItemText primary={title} secondary={body} />
+                        <Link to={`/${category}/${id}`} onClick={(e) => this.clickDetails(e)}> <ListItemText primary={title} secondary={body} /> </Link>
                     </Grid>
                     <Grid item xs={12} sm={9}>
                         <ListItemSecondaryAction>
@@ -188,6 +198,9 @@ class Post extends Component {
                         </ListItemSecondaryAction>
                     </Grid>
                 </ListItem>
+
+
+
             </div>
         )
     }
@@ -212,6 +225,8 @@ const mapDispatchToProps = dispatch => {
         downVotePost: (data) => dispatch(downVotePost(data))
     }
 }
+
+
 
 export default connect(
     mapStateToProps,

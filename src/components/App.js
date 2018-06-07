@@ -10,7 +10,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
 //Router
-import { Route } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 
 //Material-UI
 import { withStyles } from 'material-ui/styles';
@@ -21,6 +21,7 @@ import Typography from 'material-ui/Typography';
 
 //Local
 import Categories from './Categories'
+import PostDetails from './PostDetails'
 import Posts from './Posts'
 import * as PostsAPI from '../services'
 import { addCategories } from '../actions/categoryActions'
@@ -90,12 +91,16 @@ class App extends Component {
           }}
         >
           <div className={classes.toolbar} />
-          <Route path="/:category" children={({ match }) => (<Categories match={match} />)} />
+          <Route path="/:category" children={({ match }) => (<Categories match={match}  />)} />
 
         </Drawer>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <Route path="/:category/:postId" children={({ match }) => (<Posts match={match} />)} />
+          <Switch>
+            <Route path="/" children={({ match }) => (<Posts match={match} />)} exact/>
+            <Route path="/:category" children={({ match, location }) => (<Posts match={match} location={location}/>)} exact/>
+            <Route path="/:category/:postId" children={({ match, location }) => (<PostDetails match={match} location={location} exact />)} />
+          </Switch>
         </main>
       </div>
 

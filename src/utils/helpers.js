@@ -1,3 +1,3 @@
 export function dateFormatter(timestamp) {
-    return new Date(timestamp).toISOString();
+    return timestamp ? new Date(timestamp).toISOString() : '';
 }

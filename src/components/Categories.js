@@ -193,7 +193,7 @@ class Categories extends Component {
 
                         {categories.map((category) => ([
                             <Divider />,
-                            <Link to={category.path} className={classes.link}>
+                            <Link to={'/' + category.path} className={classes.link}>
                                 <MenuItem key={category.path} className={classes.menuItem} onClick={() => this.clickCategory(category.path)} selected={categorySelected === category.path}>
                                     <ListItemIcon className={classes.icon}>
                                         <StarIcon />

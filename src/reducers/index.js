@@ -20,6 +20,7 @@ const initialAppState = {
     allCategories: true,
     categorySelected: ALL_CATEGORIES,
     postSelected: null,
+    postDetails:{},
     commentSelected: null,
     categories: [],
     posts: [],
