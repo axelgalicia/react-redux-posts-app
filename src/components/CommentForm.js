@@ -70,7 +70,7 @@ class CommentForm extends Component {
         let now = new Date();
         let time = new Date(now).getTime();
         const { author, body } = this.state
-        const { getPosts, getComments, parentId, categorySelected } = this.props
+        const { getPosts, getComments, parentId, categorySelected, isDetails } = this.props
         const comment = {
             body: body,
             author: author,
@@ -82,7 +82,9 @@ class CommentForm extends Component {
         PostsAPI.addComment(comment).then((comment) => {
            // this.props.getComments()
             this.setState(defaultState)
-            getPosts(categorySelected)
+            if(!isDetails) {
+                getPosts(categorySelected)
+            }
             this.props.close()
         })
 
@@ -109,7 +111,7 @@ class CommentForm extends Component {
 
     render() {
 
-        const { classes, open, close, editMode } = this.props
+        const { classes, open, close, editMode} = this.props
         const { author, body } = this.state
 
         return (

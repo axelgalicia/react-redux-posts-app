@@ -45,7 +45,7 @@ class PostDetails extends Component {
 
     state = {
         comments: [],
-        showComments: false,
+        showComments: true,
         showPostForm: false,
         showCommentForm: false,
         showCommentEditForm: false
@@ -53,12 +53,9 @@ class PostDetails extends Component {
 
 
     componentDidMount = () => {
-        console.log(this.props)
         const { match } = this.props
         if (match && match.params && match.params.category && match.params.postId) {
             const { category, postId } = match.params
-
-            console.log(category, postId)
             this.clickCategory(category);
             this.getPostById(postId);
             this.getComments()
@@ -91,11 +88,7 @@ class PostDetails extends Component {
     clickPost = (e, id) => {
         e.stopPropagation()
         this.props.selectPost({ postId: id });
-        this.setState(({
-            showComments: !this.state.showComments
-        }))
         this.getComments();
-
 
     }
 
@@ -106,6 +99,7 @@ class PostDetails extends Component {
 
     addNewComment = (e) => {
         this.setState({ showCommentEditForm: true })
+        this.getPostById(this.props.match.params.postId)
         e.stopPropagation();
 
     }
@@ -128,7 +122,9 @@ class PostDetails extends Component {
     }
 
     getComments = () => {
-        PostsAPI.getCommentsByPostId(this.props.id).then((comments) => {
+        const { match } = this.props
+        const { postId } = match.params
+        PostsAPI.getCommentsByPostId(postId).then((comments) => {
             this.setState(({
                 comments: comments
             }));
@@ -139,10 +135,12 @@ class PostDetails extends Component {
     deleteComment = (e, id) => {
         e.stopPropagation()
         PostsAPI.deleteComment(id).then((comments) => {
+            console.log('Bringing comments:', comments)
             this.setState(({
                 comments: this.state.comments.filter(({ id }) => id !== id),
                 showComments: true
             }))
+            this.getPostById(this.props.match.params.postId)
         })
 
         this.getComments();
@@ -158,6 +156,7 @@ class PostDetails extends Component {
 
     editPost = (e) => {
         e.stopPropagation()
+        this.getPostById(this.props.match.params.postId)
         this.setState({ showPostForm: true })
     }
 
@@ -171,6 +170,8 @@ class PostDetails extends Component {
 
     closeCommentEditForm = () => {
         this.setState({ showCommentEditForm: false })
+        this.getPostById(this.props.match.params.postId)
+        this.getComments();
     }
 
     render() {
@@ -209,7 +210,8 @@ class PostDetails extends Component {
                         comment={null}
                         close={this.closeCommentEditForm}
                         editMode={false}
-                        getComments={this.getComments} />,
+                        getComments={this.getComments}
+                        isDetails={true} />,
                     <ListItem button onClick={(e) => this.clickPost(e, id)}>
 
                         <Grid item xs={12} sm={3}>
@@ -263,8 +265,6 @@ class PostDetails extends Component {
 
                     <Grid container spacing={8} alignItems="stretch" direction="column" justify="center">
                         {
-
-                            showComments ? (
                                 comments.map((comment) => (
 
                                     comment.deleted ? '' : [
@@ -288,8 +288,7 @@ class PostDetails extends Component {
                                             parentId={id}
                                             getComments={this.getComments} />
                                     ]))
-
-                            ) : ''
+                           
                         }
 
                     </Grid>

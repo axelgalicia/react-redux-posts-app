@@ -116,8 +116,6 @@ class Post extends Component {
         //Props
         const { category, id, title, timestamp, body, author, voteScore, commentCount, getPosts, location } = this.props
 
-        console.log('$$$$$$$$$$$$$$$$$$', location)
-
         //State
         const { showPostForm, showCommentForm, showCommentEditForm, redirect } = this.state
 
