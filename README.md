@@ -27,7 +27,7 @@ To get started and use the application just follow the below steps:
  ascendant or descendant order.
 
  ## See comments
- - Just clicking on the Post directly and the comments will be displayed.
+ - Just clicking on the Post title and the user will be redirected to the Post details page where the comments will be displayed in any.
 
 
  ## Creating comments

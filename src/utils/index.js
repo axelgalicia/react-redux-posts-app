@@ -15,6 +15,4 @@ export const uuid = () => {
     return uuid;
 }
 
-console.log(uuid())
-
 

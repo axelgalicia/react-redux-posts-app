@@ -135,7 +135,6 @@ class PostDetails extends Component {
     deleteComment = (e, id) => {
         e.stopPropagation()
         PostsAPI.deleteComment(id).then((comments) => {
-            console.log('Bringing comments:', comments)
             this.setState(({
                 comments: this.state.comments.filter(({ id }) => id !== id),
                 showComments: true
@@ -197,74 +196,76 @@ class PostDetails extends Component {
         return (
 
             <div>
-                {showMy404 ? <My404 /> : [
-                    <h3>Post Details </h3>,
+                {showMy404 ? <My404 /> : (
+                    <div>
+                        <h3>Post Details </h3>
                     <PostForm
-                        open={showPostForm}
-                        post={postObj}
-                        close={this.close}
-                        editMode={true} />,
+                            open={showPostForm}
+                            post={postObj}
+                            close={this.close}
+                            editMode={true}
+                            key={showPostForm} />
                     <CommentForm
-                        parentId={id}
-                        open={showCommentEditForm}
-                        comment={null}
-                        close={this.closeCommentEditForm}
-                        editMode={false}
-                        getComments={this.getComments}
-                        isDetails={true} />,
+                            parentId={id}
+                            open={showCommentEditForm}
+                            comment={null}
+                            close={this.closeCommentEditForm}
+                            editMode={false}
+                            getComments={this.getComments}
+                            isDetails={true} />
                     <ListItem button onClick={(e) => this.clickPost(e, id)}>
 
-                        <Grid item xs={12} sm={3}>
-                            <Avatar>
-                                <MailIcon />
-                            </Avatar>
-                            <ListItemText primary={author} secondary={<Timestamp time={dateFormatter(timestamp)} format='short' />} />
-                            <ListItemText primary={title} secondary={body} />
-                        </Grid>
-                        <Grid item xs={12} sm={9}>
-                            <ListItemSecondaryAction>
-                                <Tooltip title="Add new comment">
-                                    <IconButton aria-label="Comments" onClick={(e) => this.addNewComment(e)}>
-                                        {
-                                            commentCount > 0 ? <Badge badgeContent={commentCount} color="primary">
-                                                <CommentIcon /></Badge> : <CommentIcon />
-                                        }
+                            <Grid item xs={12} sm={3}>
+                                <Avatar>
+                                    <MailIcon />
+                                </Avatar>
+                                <ListItemText primary={author} secondary={<Timestamp time={dateFormatter(timestamp)} format='short' />} />
+                                <ListItemText primary={title} secondary={body} />
+                            </Grid>
+                            <Grid item xs={12} sm={9}>
+                                <ListItemSecondaryAction>
+                                    <Tooltip title="Add new comment">
+                                        <IconButton aria-label="Comments" onClick={(e) => this.addNewComment(e)}>
+                                            {
+                                                commentCount > 0 ? <Badge badgeContent={commentCount} color="primary">
+                                                    <CommentIcon /></Badge> : <CommentIcon />
+                                            }
 
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Edit">
-                                    <IconButton aria-label="ModeEditIcon" onClick={(e) => this.editPostClick(e)}>
-                                        <ModeEditIcon />
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Delete">
-                                    <IconButton aria-label="Delete" onClick={(e) => this.deletePost(e, id)}>
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Vote Up">
-                                    <IconButton aria-label="Vote Up" onClick={(e) => this.votePost(e, id, '+')}>
-                                        <ThumbUp />
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Vote Down">
-                                    <IconButton aria-label="Vote Down" onClick={(e) => this.votePost(e, id, '-')}>
-                                        <ThumbDown />
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Votes">
-                                    <IconButton aria-label="Votes">
-                                        <Badge badgeContent={voteScore ? voteScore : '0'} color="primary">
-                                            <GradeIcon />
-                                        </Badge>
-                                    </IconButton>
-                                </Tooltip>
-                            </ListItemSecondaryAction>
-                        </Grid>
-                    </ListItem>,
-
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Edit">
+                                        <IconButton aria-label="ModeEditIcon" onClick={(e) => this.editPostClick(e)}>
+                                            <ModeEditIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Delete">
+                                        <IconButton aria-label="Delete" onClick={(e) => this.deletePost(e, id)}>
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Vote Up">
+                                        <IconButton aria-label="Vote Up" onClick={(e) => this.votePost(e, id, '+')}>
+                                            <ThumbUp />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Vote Down">
+                                        <IconButton aria-label="Vote Down" onClick={(e) => this.votePost(e, id, '-')}>
+                                            <ThumbDown />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Votes">
+                                        <IconButton aria-label="Votes">
+                                            <Badge badgeContent={voteScore ? voteScore : '0'} color="primary">
+                                                <GradeIcon />
+                                            </Badge>
+                                        </IconButton>
+                                    </Tooltip>
+                                </ListItemSecondaryAction>
+                            </Grid>
+                        </ListItem>
+    
                     <Grid container spacing={8} alignItems="stretch" direction="column" justify="center">
-                        {
+                            {
                                 comments.map((comment) => (
 
                                     comment.deleted ? '' : [
@@ -288,11 +289,11 @@ class PostDetails extends Component {
                                             parentId={id}
                                             getComments={this.getComments} />
                                     ]))
-                           
-                        }
 
-                    </Grid>
-                ]}
+                            }
+
+                        </Grid>
+                    </div>)}
             </div>
 
         )
