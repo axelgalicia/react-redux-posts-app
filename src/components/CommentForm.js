@@ -70,7 +70,7 @@ class CommentForm extends Component {
         let now = new Date();
         let time = new Date(now).getTime();
         const { author, body } = this.state
-        const { getPosts, getComments, parentId, categorySelected, isDetails } = this.props
+        const { getPosts, parentId, categorySelected, isDetails } = this.props
         const comment = {
             body: body,
             author: author,

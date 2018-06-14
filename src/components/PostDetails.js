@@ -6,8 +6,6 @@
 
 
 import React, { Component } from 'react';
-//Router
-import { Link, withRouter } from 'react-router-dom'
 //React-Redux
 import { connect } from 'react-redux';
 //Material-UI
@@ -132,11 +130,11 @@ class PostDetails extends Component {
 
     }
 
-    deleteComment = (e, id) => {
+    deleteComment = (e, postId) => {
         e.stopPropagation()
-        PostsAPI.deleteComment(id).then((comments) => {
+        PostsAPI.deleteComment(postId).then((comments) => {
             this.setState(({
-                comments: this.state.comments.filter(({ id }) => id !== id),
+                comments: this.state.comments.filter(({ id }) => id !== postId),
                 showComments: true
             }))
             this.getPostById(this.props.match.params.postId)
@@ -176,14 +174,14 @@ class PostDetails extends Component {
     render() {
 
         //Props
-        const { posts, showMy404, location } = this.props
+        const { posts, showMy404 } = this.props
 
 
         //Props
         const { category, id, title, timestamp, body, author, voteScore, commentCount } = posts[0] ? posts[0] : {}
 
         //State
-        const { comments, showComments, showPostForm, showCommentForm, showCommentEditForm } = this.state
+        const { comments, showPostForm, showCommentForm, showCommentEditForm } = this.state
 
         const postObj = {
             id: id,

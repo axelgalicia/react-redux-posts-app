@@ -7,7 +7,7 @@
 
 import React, { Component } from 'react';
 //Router
-import { Link, Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 //React-Redux
 import { connect } from 'react-redux';
 //Material-UI
@@ -54,7 +54,6 @@ class Post extends Component {
     }
 
     clickPost = (e, id) => {
-        console.log('HELLO')
         e.stopPropagation()
         this.props.selectPost({ postId: id });
     }
@@ -114,10 +113,10 @@ class Post extends Component {
 
 
         //Props
-        const { category, id, title, timestamp, body, author, voteScore, commentCount, getPosts, location } = this.props
+        const { category, id, title, timestamp, body, author, voteScore, commentCount, getPosts } = this.props
 
         //State
-        const { showPostForm, showCommentForm, showCommentEditForm, redirect } = this.state
+        const { showPostForm, showCommentEditForm } = this.state
 
         const postObj = {
             id: id,

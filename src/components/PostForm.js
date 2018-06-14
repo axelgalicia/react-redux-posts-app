@@ -47,8 +47,6 @@ class PostForm extends Component {
     }
 
     componentDidMount() {
-
-        console.log('------------------------AAAAAA',this.state)
         const { post } = this.props
  
         if (this.props.editMode) {
@@ -112,8 +110,6 @@ class PostForm extends Component {
 
         const { classes, open, close, editMode, post, categorySelected } = this.props
         const { title, author, body, } = this.state
-
-        console.log(post)
 
         return (
             <div>
