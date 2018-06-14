@@ -129,7 +129,7 @@ class Post extends Component {
 
         return (
 
-            <div>{id}
+            <div>
 
                 <PostForm
                     open={showPostForm}
